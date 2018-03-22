@@ -1,0 +1,10 @@
+
+
+.arrow-cursor{
+    cursor: url(/game/imgsources/newgfx/UI/cursor.png), none;!important;
+}
+
+.skill-cursor {
+    cursor: url(/game/imgsources/newgfx/UI/cursorattack.png), none;  !important;
+}
+

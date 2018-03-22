@@ -1,0 +1,83 @@
+
+unnamed.png
+size: 1024,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+LevelUp0001
+  rotate: false
+  xy: 791, 31
+  size: 72, 85
+  orig: 169, 120
+  offset: 41, 15
+  index: -1
+LevelUp0002
+  rotate: false
+  xy: 532, 17
+  size: 91, 99
+  orig: 169, 120
+  offset: 36, 9
+  index: -1
+LevelUp0003
+  rotate: false
+  xy: 425, 9
+  size: 105, 107
+  orig: 169, 120
+  offset: 33, 8
+  index: -1
+LevelUp0004
+  rotate: false
+  xy: 2, 10
+  size: 165, 106
+  orig: 169, 120
+  offset: 3, 10
+  index: -1
+LevelUp0005
+  rotate: false
+  xy: 169, 15
+  size: 137, 101
+  orig: 169, 120
+  offset: 17, 13
+  index: -1
+LevelUp0006
+  rotate: false
+  xy: 308, 20
+  size: 115, 96
+  orig: 169, 120
+  offset: 28, 15
+  index: -1
+LevelUp0007
+  rotate: false
+  xy: 625, 28
+  size: 84, 88
+  orig: 169, 120
+  offset: 43, 21
+  index: -1
+LevelUp0008
+  rotate: false
+  xy: 711, 34
+  size: 78, 82
+  orig: 169, 120
+  offset: 49, 24
+  index: -1
+LevelUp0009
+  rotate: false
+  xy: 865, 53
+  size: 65, 63
+  orig: 169, 120
+  offset: 60, 32
+  index: -1
+LevelUp0010
+  rotate: false
+  xy: 932, 80
+  size: 42, 36
+  orig: 169, 120
+  offset: 76, 44
+  index: -1
+LevelUp0011
+  rotate: false
+  xy: 2, 2
+  size: 24, 6
+  orig: 169, 120
+  offset: 92, 53
+  index: -1
