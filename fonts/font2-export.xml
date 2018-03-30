@@ -1,0 +1,23 @@
+<font>
+	<info face="font2-export" size="80" />
+	<common lineHeight="80" scaleW="193" scaleH="232" pages="1" />
+	<pages>
+		<page id="0" file="font2-export.png" />
+	</pages>
+	<chars count="12">
+		<char id="48" x="0" y="76" width="51" height="77" xoffset="0" yoffset="3" xadvance="52" /><!-- 0 -->
+		<char id="49" x="52" y="76" width="47" height="76" xoffset="0" yoffset="3" xadvance="48" /><!-- 1 -->
+		<char id="50" x="101" y="154" width="45" height="76" xoffset="0" yoffset="3" xadvance="46" /><!-- 2 -->
+		<char id="51" x="147" y="154" width="45" height="76" xoffset="0" yoffset="4" xadvance="46" /><!-- 3 -->
+		<char id="52" x="0" y="0" width="56" height="75" xoffset="0" yoffset="4" xadvance="57" /><!-- 4 -->
+		<char id="53" x="148" y="0" width="44" height="76" xoffset="0" yoffset="4" xadvance="45" /><!-- 5 -->
+		<char id="54" x="51" y="154" width="49" height="77" xoffset="0" yoffset="3" xadvance="50" /><!-- 6 -->
+		<char id="55" x="57" y="0" width="47" height="75" xoffset="0" yoffset="4" xadvance="48" /><!-- 7 -->
+		<char id="56" x="100" y="76" width="47" height="77" xoffset="0" yoffset="3" xadvance="48" /><!-- 8 -->
+		<char id="57" x="0" y="154" width="50" height="77" xoffset="0" yoffset="3" xadvance="51" /><!-- 9 -->
+		<char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="20" /><!--   -->
+		<char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="160" /><!-- 	 -->
+	</chars>
+	<kernings count="0">
+	</kernings>
+</font>

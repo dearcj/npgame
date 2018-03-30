@@ -1,9 +1,9 @@
-const objFolder = '../objects/';
-const levelsFolder = '../levels/';
+const objFolder = './objects/';
+const levelsFolder = './levels/';
 
 const fs = require('fs');
 const path = require('path');
-let ws = fs.createWriteStream("../ObjectsList.ts");
+let ws = fs.createWriteStream("./ObjectsList.ts");
 fs.readdir(objFolder, (err, files) => {
     let shortFiles = [];
     files.forEach(file => {

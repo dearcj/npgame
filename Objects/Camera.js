@@ -137,12 +137,13 @@ define(["require", "exports", "./O", "../Math", "../main"], function (require, e
                 clip.y = obj.pos[1] + offsY;
             }
             else {
-                clip.x = obj.pos[0] + this.delta[0] + offsX - this.offset[0];
-                clip.y = obj.pos[1] + this.delta[1] + offsY - this.offset[1];
+                clip.x = obj.pos[0] + this.delta[0] + offsX;
+                clip.y = obj.pos[1] + this.delta[1] + offsY;
             }
-            if (!obj.alwaysVisible && !obj.noCameraOffset) {
-                clip.visible = this.isVisible(clip);
-            }
+            clip.visible = true;
+            //if (!obj.alwaysVisible && !obj.noCameraOffset) {
+            //   clip.visible = this.isVisible(clip)
+            //}
             if (clip.visible) {
                 clip.rotation = obj.a + this.a;
             }

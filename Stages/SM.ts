@@ -168,7 +168,7 @@ export class SM {
     }
 
     createCamera(): Camera {
-        this.camera = new Camera([SCR_WIDTH / 2, SCR_HEIGHT / 2]);
+        this.camera = new Camera([0, 0]);
         return this.camera;
     }
 

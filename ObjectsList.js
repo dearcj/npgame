@@ -12,5 +12,9 @@ define(["require", "exports", "./Objects/Aligner", "./Objects/BaseParticleSystem
         ParticleSystem: ParticleSystem_1.ParticleSystem,
         TextBox: TextBox_1.TextBox,
     };
-    exports.LevelNames = [];
+    exports.LevelNames = [
+        "levels/menu.tmx",
+        "levels/npgame.tsx",
+        "levels/untitled.tmx",
+    ];
 });

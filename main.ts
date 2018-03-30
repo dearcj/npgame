@@ -1,7 +1,6 @@
 import {Sound} from "./Sound";
 import {PauseTimer} from "./PauseTimer";
 import {LM} from "./lm";
-import * as FMath from "./lib/fmath"
 import {Vec2} from "./Math";
 import {ResourceManager} from "./ResourceManager";
 import {LevelNames} from "./ObjectsList";
@@ -34,17 +33,14 @@ const GLOBAL_ASSETS = [
     ///////////////////////////////////////////
     // Atlases
     ///////////////////////////////////////////
-    'atlas/allluts.png',
 
     'atlas/tiles1.json',
-    'atlas/effects.json',
 
     ///////////////////////////////////////////
     // Fonts
     ///////////////////////////////////////////
-    'fonts/smallfontp.xml',
-    'fonts/smallfontx1.xml',
-    'atlas/dedgamecaps.xml',
+    'fonts/main-export.xml',
+    'fonts/font2-export.xml',
 
 
     ///////////////////////////////////////////
@@ -60,10 +56,10 @@ export let Power2 = window.Power2;
 export let Sine = window.Sine;
 export let Elastic = window.Elastic;
 
+export let FMath = window.FMath;
 
-
-export let SCR_WIDTH;//SCR_WIDTH;
-export let SCR_HEIGHT;//SCR_HEIGHT;
+export let SCR_WIDTH = 720;//SCR_WIDTH;
+export let SCR_HEIGHT = 1280;//SCR_HEIGHT;
 
 export let SCR_WIDTH_HALF; //recalc later
 export let SCR_HEIGHT_HALF; //recalc later
@@ -124,10 +120,6 @@ export class Main {
     lostFocus: number;
     public deltaSec: number = 0.01;
 
-    setTimeScale(x: number) {
-        _.TweenMax.globalTimeScale(x);
-        this.timeScale = x;
-    }
 
     constructor() {
         this.__DIR = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1);
@@ -217,13 +209,14 @@ export class Main {
     }
 
     setScreenRes(baseW: number, baseH: number) {
-        this.appScale = baseH / MIN_SCR_HEIGHT;
-        if (this.appScale > 1.28) this.appScale = 1.28;
-        SCR_WIDTH = baseW / this.appScale;
-        SCR_HEIGHT = baseH / this.appScale;
-        SCR_WIDTH_HALF = SCR_WIDTH * .5;
-        SCR_HEIGHT_HALF = SCR_HEIGHT * .5;
-        this.screenCenterOffset = [(SCR_WIDTH - MIN_SCR_WIDTH) * .5, (SCR_HEIGHT - MIN_SCR_HEIGHT) * .5];
+        //this.appScale = baseH / MIN_SCR_HEIGHT;
+        //if (this.appScale > 1.28) this.appScale = 1.28;
+        //SCR_WIDTH = baseW / this.appScale;
+        //SCR_HEIGHT = baseH / this.appScale;
+        //SCR_WIDTH_HALF = SCR_WIDTH * .5;
+        //SCR_HEIGHT_HALF = SCR_HEIGHT * .5;
+        //this.screenCenterOffset = [(SCR_WIDTH - MIN_SCR_WIDTH) * .5, (SCR_HEIGHT - MIN_SCR_HEIGHT) * .5];
+        this.screenCenterOffset = [0, 0];
     }
 
 
@@ -239,9 +232,9 @@ export class Main {
 
         this.app = new PIXI.Application(SCR_WIDTH, SCR_HEIGHT, {
             autoStart: true,
-            clearBeforeRender: false,
+            clearBeforeRender: true,
             resolution: this.appScale, antialias: false,
-            preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xfffffff,
+            preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
         });
         document.body.appendChild(this.app.view);
 
@@ -293,20 +286,20 @@ export class Main {
 
         const borderWidth = 3;
         this.preloadBar.beginFill(0x000000);
-        this.preloadBar.moveTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1 - borderWidth, SCR_HEIGHT * 0.495 - borderWidth);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.9 + borderWidth, SCR_HEIGHT * 0.495 - borderWidth);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.9 + borderWidth, SCR_HEIGHT * 0.505 + borderWidth);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1 - borderWidth, SCR_HEIGHT * 0.505 + borderWidth);
+        this.preloadBar.moveTo(SCR_WIDTH * 0.1 - borderWidth, SCR_HEIGHT * 0.495 - borderWidth);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.9 + borderWidth, SCR_HEIGHT * 0.495 - borderWidth);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.9 + borderWidth, SCR_HEIGHT * 0.505 + borderWidth);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.1 - borderWidth, SCR_HEIGHT * 0.505 + borderWidth);
         this.preloadBar.endFill();
     }
 
     drawPreloaderProgress(progressPercent: number): void {
-        this.preloadBar.beginFill(0xffffff);
+        this.preloadBar.beginFill(0x000000);
         const progress = progressPercent / 100;
-        this.preloadBar.moveTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1, SCR_HEIGHT * 0.495);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1 + SCR_WIDTH * 0.8 * progress, SCR_HEIGHT * 0.495);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1 + SCR_WIDTH * 0.8 * progress, SCR_HEIGHT * 0.505);
-        this.preloadBar.lineTo(_.screenCenterOffset[0] + SCR_WIDTH * 0.1, SCR_HEIGHT * 0.505);
+        this.preloadBar.moveTo(SCR_WIDTH * 0.1, SCR_HEIGHT * 0.495);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.1 + SCR_WIDTH * 0.8 * progress, SCR_HEIGHT * 0.495);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.1 + SCR_WIDTH * 0.8 * progress, SCR_HEIGHT * 0.505);
+        this.preloadBar.lineTo(SCR_WIDTH * 0.1, SCR_HEIGHT * 0.505);
         this.preloadBar.endFill();
     }
 
@@ -321,7 +314,6 @@ export class Main {
             this.loadingCounter++;
             if (this.loadingCounter == 2) this.loadComplete()
         };
-        console.log("ANUS");
 
         this.rm = new ResourceManager();
         this.rm.loadAssets(GLOBAL_ASSETS.concat(LevelNames), (loader: any, evt: any) => {
@@ -351,7 +343,6 @@ export class Main {
             this.totalDelta += this.delta;
             this.totalFrames++;
             this.sm.process();
-
         }
     }
 

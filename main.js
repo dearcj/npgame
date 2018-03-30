@@ -7,13 +7,10 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
         ///////////////////////////////////////////
         // Spine
         ///////////////////////////////////////////
-        //asdasd
         ///////////////////////////////////////////
         // Atlases
         ///////////////////////////////////////////
-        'atlas/allluts.png',
         'atlas/tiles1.json',
-        'atlas/effects.json',
         ///////////////////////////////////////////
         // Fonts
         ///////////////////////////////////////////
@@ -28,6 +25,8 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
     exports.Power2 = window.Power2;
     exports.Sine = window.Sine;
     exports.Elastic = window.Elastic;
+    exports.SCR_WIDTH = 720; //SCR_WIDTH;
+    exports.SCR_HEIGHT = 1280; //SCR_HEIGHT;
     exports.TweenMax = window.TweenMax;
     var Main = /** @class */ (function () {
         function Main() {
@@ -52,10 +51,6 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
             this.deltaSec = 0.01;
             this.__DIR = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1);
         }
-        Main.prototype.setTimeScale = function (x) {
-            exports._.TweenMax.globalTimeScale(x);
-            this.timeScale = x;
-        };
         Main.prototype.cm = function (s, layer, autoplay, times) {
             if (layer === void 0) { layer = null; }
             if (autoplay === void 0) { autoplay = false; }
@@ -137,14 +132,14 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
             xmlHttp.send(null);
         };
         Main.prototype.setScreenRes = function (baseW, baseH) {
-            this.appScale = baseH / ClientSettings_1.MIN_SCR_HEIGHT;
-            if (this.appScale > 1.28)
-                this.appScale = 1.28;
-            exports.SCR_WIDTH = baseW / this.appScale;
-            exports.SCR_HEIGHT = baseH / this.appScale;
-            exports.SCR_WIDTH_HALF = exports.SCR_WIDTH * .5;
-            exports.SCR_HEIGHT_HALF = exports.SCR_HEIGHT * .5;
-            this.screenCenterOffset = [(exports.SCR_WIDTH - ClientSettings_1.MIN_SCR_WIDTH) * .5, (exports.SCR_HEIGHT - ClientSettings_1.MIN_SCR_HEIGHT) * .5];
+            //this.appScale = baseH / MIN_SCR_HEIGHT;
+            //if (this.appScale > 1.28) this.appScale = 1.28;
+            //SCR_WIDTH = baseW / this.appScale;
+            //SCR_HEIGHT = baseH / this.appScale;
+            //SCR_WIDTH_HALF = SCR_WIDTH * .5;
+            //SCR_HEIGHT_HALF = SCR_HEIGHT * .5;
+            //this.screenCenterOffset = [(SCR_WIDTH - MIN_SCR_WIDTH) * .5, (SCR_HEIGHT - MIN_SCR_HEIGHT) * .5];
+            this.screenCenterOffset = [0, 0];
         };
         Main.prototype.start = function () {
             var _this = this;
@@ -157,9 +152,9 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
             //TweenMax.lagSmoothing(0);
             this.app = new PIXI.Application(exports.SCR_WIDTH, exports.SCR_HEIGHT, {
                 autoStart: true,
-                clearBeforeRender: false,
+                clearBeforeRender: true,
                 resolution: this.appScale, antialias: false,
-                preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xfffffff,
+                preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
             });
             document.body.appendChild(this.app.view);
             this.camera = new PIXI.Container();
@@ -201,19 +196,19 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
             this.app.stage.addChild(this.preloadBar);
             var borderWidth = 3;
             this.preloadBar.beginFill(0x000000);
-            this.preloadBar.moveTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1 - borderWidth, exports.SCR_HEIGHT * 0.495 - borderWidth);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.9 + borderWidth, exports.SCR_HEIGHT * 0.495 - borderWidth);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.9 + borderWidth, exports.SCR_HEIGHT * 0.505 + borderWidth);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1 - borderWidth, exports.SCR_HEIGHT * 0.505 + borderWidth);
+            this.preloadBar.moveTo(exports.SCR_WIDTH * 0.1 - borderWidth, exports.SCR_HEIGHT * 0.495 - borderWidth);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.9 + borderWidth, exports.SCR_HEIGHT * 0.495 - borderWidth);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.9 + borderWidth, exports.SCR_HEIGHT * 0.505 + borderWidth);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.1 - borderWidth, exports.SCR_HEIGHT * 0.505 + borderWidth);
             this.preloadBar.endFill();
         };
         Main.prototype.drawPreloaderProgress = function (progressPercent) {
-            this.preloadBar.beginFill(0xffffff);
+            this.preloadBar.beginFill(0x000000);
             var progress = progressPercent / 100;
-            this.preloadBar.moveTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1, exports.SCR_HEIGHT * 0.495);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1 + exports.SCR_WIDTH * 0.8 * progress, exports.SCR_HEIGHT * 0.495);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1 + exports.SCR_WIDTH * 0.8 * progress, exports.SCR_HEIGHT * 0.505);
-            this.preloadBar.lineTo(exports._.screenCenterOffset[0] + exports.SCR_WIDTH * 0.1, exports.SCR_HEIGHT * 0.505);
+            this.preloadBar.moveTo(exports.SCR_WIDTH * 0.1, exports.SCR_HEIGHT * 0.495);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.1 + exports.SCR_WIDTH * 0.8 * progress, exports.SCR_HEIGHT * 0.495);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.1 + exports.SCR_WIDTH * 0.8 * progress, exports.SCR_HEIGHT * 0.505);
+            this.preloadBar.lineTo(exports.SCR_WIDTH * 0.1, exports.SCR_HEIGHT * 0.505);
             this.preloadBar.endFill();
         };
         Main.prototype.clearPreloader = function () {
@@ -228,7 +223,6 @@ define(["require", "exports", "./Sound", "./PauseTimer", "./lm", "./lib/fmath", 
                 if (_this.loadingCounter == 2)
                     _this.loadComplete();
             };
-            console.log("ANUS");
             this.rm = new ResourceManager_1.ResourceManager();
             this.rm.loadAssets(GLOBAL_ASSETS.concat(ObjectsList_1.LevelNames), function (loader, evt) {
                 _this.drawPreloaderProgress(loader.progress);

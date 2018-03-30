@@ -43,22 +43,6 @@ class BigTileset{
     texname:    string;
 }
 
-export class InstanceType {
-    frames: Array<Frame> = [];
-    animationData: any = {};
-    type: string;
-    name: string;
-    sid: string;
-    baseType: string;
-
-    className: string;
-    frameCount: number;
-    loop: number;
-    pingpong: number;
-    repeatcount: number;
-    speed: number;
-}
-
 export class LM {
 
     public loading: boolean = false;

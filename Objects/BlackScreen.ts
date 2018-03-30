@@ -24,8 +24,8 @@ export class BlackScreen extends O{
             this.gfx.endFill();
             this.gfx.blendMode = PIXI.BLEND_MODES.MULTIPLY;
         }
-
-        this.layer.addChildAt(this.gfx, 0);
+        this.gfx.interactive = true;
+        this.layer.addChild(this.gfx);
     }
 
     process() {

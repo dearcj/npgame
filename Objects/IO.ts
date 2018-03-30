@@ -19,7 +19,6 @@ export class IO extends O {
     public valign: string;
     public fontSize: string;
     public focused: boolean;
-    public focusGfx: PIXI.Container;
     public enabled: boolean = true;
     public textFieldOffsetX: number = 0;
     public textFieldOffsetY: number = 0;
@@ -56,7 +55,6 @@ export class IO extends O {
     }
 
     setFocus(v: boolean): void{
-        this.focusGfx.visible = v;
         this.focused = v;
     }
 
@@ -124,23 +122,11 @@ export class IO extends O {
         this.noCameraOffset = true;
         this.valign = (props && props.valign) ? props.valign : 'center';
         super.init(props);
-        let spr1 = _.cs('Clock_Red.png');
-        let spr2 = _.cs('Clock_Red.png');
-        spr1.scale.x = .33;
-        spr1.scale.y = .33;
-        spr2.scale.x = .33;
-        spr2.scale.y = .33;
-        spr1.x = -75;
-        spr2.x = 75;
         if (props && props.align)
             this.align = props.align; else {
                 this.align = "center"
         }
-        this.focusGfx = new PIXI.Container();
-        this.focusGfx.addChild(spr1);
-        this.focusGfx.addChild(spr2);
         this.setFocus(false);
-        this.gfx.addChild(this.focusGfx);
     }
 
 

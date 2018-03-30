@@ -105,8 +105,7 @@ define(["require", "exports", "./IO", "./TextBox", "../main"], function (require
                     if (_this.customMouseDown)
                         _this.customMouseDown();
                     if (_this.fadeOnMouseDown) {
-                        if (_this.gfx && _this.gfx.color)
-                            _this.gfx.color.setLight(0.5, 0.5, 0.5);
+                        _this.gfx.tint = 0x888888;
                         _this.textField.tint = 0x888888;
                     }
                     if (_this.clickAnimation) {
@@ -170,8 +169,7 @@ define(["require", "exports", "./IO", "./TextBox", "../main"], function (require
                 }
             }
             if (this.fadeOnMouseDown) {
-                if (this.gfx && this.gfx.color)
-                    this.gfx.color.setLight(1, 1, 1);
+                this.gfx.tint = 0xffffff;
                 this.textField.tint = 0xffffff;
             }
         };

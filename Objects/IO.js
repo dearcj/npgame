@@ -55,7 +55,6 @@ define(["require", "exports", "../main", "./O"], function (require, exports, mai
             }
         };
         IO.prototype.setFocus = function (v) {
-            this.focusGfx.visible = v;
             this.focused = v;
         };
         IO.prototype.getFocus = function () {
@@ -121,24 +120,12 @@ define(["require", "exports", "../main", "./O"], function (require, exports, mai
             this.noCameraOffset = true;
             this.valign = (props && props.valign) ? props.valign : 'center';
             _super.prototype.init.call(this, props);
-            var spr1 = main_1._.cs('Clock_Red.png');
-            var spr2 = main_1._.cs('Clock_Red.png');
-            spr1.scale.x = .33;
-            spr1.scale.y = .33;
-            spr2.scale.x = .33;
-            spr2.scale.y = .33;
-            spr1.x = -75;
-            spr2.x = 75;
             if (props && props.align)
                 this.align = props.align;
             else {
                 this.align = "center";
             }
-            this.focusGfx = new PIXI.Container();
-            this.focusGfx.addChild(spr1);
-            this.focusGfx.addChild(spr2);
             this.setFocus(false);
-            this.gfx.addChild(this.focusGfx);
         };
         IO.prototype.onDestroy = function () {
             this.click = null;

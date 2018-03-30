@@ -61,8 +61,8 @@ export class Button extends IO {
             if (this.doScale) {
                 _.TweenMax.killTweensOf(this.gfx.scale);
 
-                new _.TweenMax(this.gfx.scale, 0.08, {y: this.baseScale[1] + 0.03, ease: UIEase});
-                new _.TweenMax(this.gfx.scale, 0.08, {x: this.baseScale[0] + 0.03, ease: UIEase});
+                new _.TweenMax(this.gfx.scale, 0.08, {y: this.baseScale[1] + 0.015, ease: UIEase});
+                new _.TweenMax(this.gfx.scale, 0.08, {x: this.baseScale[0] + 0.015, ease: UIEase});
             }
 
 
@@ -118,8 +118,7 @@ export class Button extends IO {
                 if (this.customMouseDown) this.customMouseDown();
 
                 if (this.fadeOnMouseDown) {
-                    if (this.gfx && this.gfx.color)
-                        this.gfx.color.setLight(0.5, 0.5, 0.5);
+                        this.gfx.tint = 0x888888;
                     this.textField.tint = 0x888888;
                 }
 
@@ -191,8 +190,7 @@ export class Button extends IO {
         }
 
         if (this.fadeOnMouseDown) {
-            if (this.gfx && this.gfx.color)
-                this.gfx.color.setLight(1, 1, 1);
+            this.gfx.tint = 0xffffff;
             this.textField.tint = 0xffffff;
         }
     }

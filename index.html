@@ -8,12 +8,14 @@
     <script src="lib/CubicBezier.js"></script>
     <script src="lib/howler.min.js"></script>
     <script src="lib/pixi-ui.js"></script>
+    <script src="lib/fmath.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
-    <script data-main="./main.js" src="lib/require.js"></script>
+    <script src="lib/require.js"></script>
+    <script src="bundle/bundle.js"></script>
     <script>
-
+        requirejs(['main'], function(foo) {});
     window.startTime = new Date();
         function doubleRescale() {
             setTimeout(rescale, 600);

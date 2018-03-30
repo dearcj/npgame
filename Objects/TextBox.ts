@@ -8,7 +8,7 @@ import {_} from "../main";
  * Created by KURWINDALLAS on 11.07.2014.
  *////
 
-const DEFAULT_FONT = 'smallfontp';
+const DEFAULT_FONT = 'main-export';
 
 export class TextBox extends IO {
 
@@ -45,6 +45,7 @@ export class TextBox extends IO {
 
         let pt = new PIXI.extras.BitmapText(obj.text, {font: fontName});
         (<any>pt).fontInitialSize = (<any>pt.font).size;
+        (<any>pt.font).size = (<any>pt).fontInitialSize * 0.75;
         if (props.fontscale && props.fontscale != '') {
             (<any>pt.font).size = (<any>pt).fontInitialSize * parseFloat(props.fontscale)
         }

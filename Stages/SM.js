@@ -144,7 +144,7 @@ define(["require", "exports", "../main", "../Objects/Camera", "../Math"], functi
             main_1._.app.stage.addChild(this.superstage);
         };
         SM.prototype.createCamera = function () {
-            this.camera = new Camera_1.Camera([main_1.SCR_WIDTH / 2, main_1.SCR_HEIGHT / 2]);
+            this.camera = new Camera_1.Camera([0, 0]);
             return this.camera;
         };
         SM.prototype.removeObjects = function () {
