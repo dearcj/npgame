@@ -21,8 +21,6 @@ export class Menu extends Stage {
                     this.addLine(inx, d[inx]);
                     inx++;
                 }///
-
-                //    alert( "Data Loaded: " + data );
             });
     }
 
