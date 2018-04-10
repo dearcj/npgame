@@ -25,6 +25,7 @@ export let ObjectNames = {
 };
 export let LevelNames = [
   "levels/game.tmx",
+  "levels/helplevel1.tmx",
   "levels/menu.tmx",
   "levels/modal.tmx",
   "levels/npgame.tsx",

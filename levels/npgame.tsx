@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="npgame" tilewidth="1300" tileheight="1690" tilecount="26" columns="0">
+<tileset name="npgame" tilewidth="1300" tileheight="1690" tilecount="30" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="313" height="194" source="../res/barbg.png"/>
@@ -78,5 +78,17 @@
  </tile>
  <tile id="35">
   <image width="185" height="185" source="../res/r2/vk.png"/>
+ </tile>
+ <tile id="36">
+  <image width="1300" height="1690" source="../res/r2/bigbg.png"/>
+ </tile>
+ <tile id="37">
+  <image width="1200" height="1000" source="../res/r2/onlyboard.png"/>
+ </tile>
+ <tile id="38">
+  <image width="107" height="142" source="../res/r2/listnext.png"/>
+ </tile>
+ <tile id="39">
+  <image width="77" height="77" source="../res/r2/black.png"/>
  </tile>
 </tileset>

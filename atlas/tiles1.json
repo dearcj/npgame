@@ -16,13 +16,21 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":313,"h":194},
 	"sourceSize": {"w":313,"h":194}
 },
-"board.png":
+"bigbg.png":
 {
 	"frame": {"x":2,"y":2,"w":1300,"h":1690},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":1300,"h":1690},
 	"sourceSize": {"w":1300,"h":1690}
+},
+"black.png":
+{
+	"frame": {"x":1610,"y":718,"w":77,"h":77},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":77,"h":77},
+	"sourceSize": {"w":77,"h":77}
 },
 "btnbg1.png":
 {
@@ -66,11 +74,19 @@
 },
 "ok.png":
 {
-	"frame": {"x":2,"y":2050,"w":175,"h":176},
+	"frame": {"x":1206,"y":2251,"w":175,"h":176},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":175,"h":176},
 	"sourceSize": {"w":175,"h":176}
+},
+"onlyboard.png":
+{
+	"frame": {"x":2,"y":2050,"w":1200,"h":1000},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1200,"h":1000},
+	"sourceSize": {"w":1200,"h":1000}
 },
 "playbtn.png":
 {
@@ -215,6 +231,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e2e5ec076f697b6b54a2777185ff021e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c25daf57d8e12c0984ba3870a2932f32$"
 }
 }

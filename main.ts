@@ -14,7 +14,7 @@ declare let Stats: any;
 export type PIXIContainer = any;
 export type PIXIRectangle = any;
 declare let Playtomic: any;
-declare var $: any;
+export let $: any = window.$;
 
 const GLOBAL_MUSIC_ASSETS = [];
 

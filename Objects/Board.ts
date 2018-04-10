@@ -3,7 +3,7 @@ import {O} from "./O";
 import {Shape, ShapeAmount, ToolBar} from "./ToolBar";
 import {_, Linear} from "../main";
 import {TextBox} from "./TextBox";
-import {Vec2} from "../Math";
+import {m, Vec2} from "../Math";
 
 export type ShapeOnBoard = {
     Shape: Shape;
@@ -21,8 +21,8 @@ export type Point = {
 }
 
 export class Board extends O {
-    public offsetX: number = 100;
-    public offsetY: number = 100;
+    public offsetX: number = 0;
+    public offsetY: number = 0;
     public cellsx: number = 12;
     public cellsy: number = 10;
     public cellSize: number = 100;
@@ -58,6 +58,16 @@ export class Board extends O {
             a += Math.PI / 2;
             f = rotateClockWise(f);
         }
+
+        while (true) {
+            let res = this.removeEmptyRowsCols(f);
+            if (res) {
+                f = res;
+            } else {
+                break;
+            }
+        }
+
         return {fields: f, id: shape.id,
             textureName: shape.textureName}
     }
@@ -72,9 +82,9 @@ export class Board extends O {
     init(props) {
         super.init(props);
 
-        for (let x = 0; x < this.cellsx; x++) {
+        for (let x = 0; x < this.cellsy; x++) {
             this.fields[x] = [];
-            for (let y = 0; y < this.cellsy; y++) {
+            for (let y = 0; y < this.cellsx; y++) {
                 this.fields[x].push(0);
             }
         }
@@ -83,12 +93,13 @@ export class Board extends O {
         this.gfx.addChild(this.graphics);
         this.graphics.x = this.offsetX;
         this.graphics.y = this.offsetY;
+
         this.gfx.anchor.x = 0;
         this.x -= this.gfx.width / 2;
         this.gfx.anchor.y = 0;
         this.y -= this.gfx.height / 2;
-
-        new _.TweenMax(this.graphics, 1.4, {yoyo: true, repeat: -1, alpha: 0.6, ease: Linear.easeNone})
+        this.graphics.alpha = 0.5;
+        new _.TweenMax(this.graphics, 1.4, {yoyo: true, repeat: -1, alpha: 0.3, ease: Linear.easeNone})
     }
 
     tryToPut(draggin: ShapeOnBoard): boolean {
@@ -117,19 +128,19 @@ export class Board extends O {
     align(draggin: ShapeOnBoard) {
         let loc = this.gfx.toLocal(_.cursorPos, _.sm.gui);
         let cx = this.cellSize;
-        loc.x = Math.round((loc.x) / cx) * (cx) - cx*0.5;
-        loc.y = Math.round((loc.y) / cx) * (cx) - cx*0.5;
-        let dragstartx = Math.round((loc.x) / cx ) ;
-        let dragstarty = Math.round((loc.y) / cx ) ;
-
+        loc.x = Math.floor((loc.x) / cx) * (cx);
+        loc.y = Math.floor((loc.y) / cx) * (cx);
+        let v: Vec2 = [draggin.Gfx.width / 2, draggin.Gfx.height / 2];
+        let x = m.rv2(v, draggin.Gfx.rotation);
+        let dragstartx = Math.round((loc.x - Math.abs(x[0])) / cx );
+        let dragstarty = Math.round((loc.y - Math.abs(x[1])) / cx );
+        console.log(dragstartx, "    ", dragstarty);
         draggin.StartX = dragstartx;
         draggin.StartY = dragstarty;
-        console.log(dragstartx);
-        console.log(dragstarty);
         let loc2 = this.gfx.toGlobal(loc);
-
-        draggin.Gfx.position.x = loc2.x;
-        draggin.Gfx.position.y = loc2.y;
+        let b = draggin.Gfx.getBounds();
+        draggin.Gfx.position.x = this.gfx.x + cx*this.gfx.scale.x * (dragstartx) + Math.abs(x[0]);
+        draggin.Gfx.position.y = this.gfx.y + cx*this.gfx.scale.y * (dragstarty) + Math.abs(x[1]);
     }
 
     private putShapeInField(dragstartx: number, dragstarty: number, Shape: Shape, rot: number) {
@@ -166,8 +177,8 @@ export class Board extends O {
         this.graphics.clear();
         let pointsMap: {[key: string]: boolean} = {};
         let points: Point[] = [];
-        for (let x = 0; x < this.cellsx; x++) {
-            for (let y = 0; y < this.cellsy; y++) {
+        for (let x = 0; x < this.cellsy; x++) {
+            for (let y = 0; y < this.cellsx; y++) {
                 if (this.fields[x][y] == 1) {
                     for (let i = 0; i < 2; i++) {
                         for (let j = 0; j < 2; j++) {
@@ -261,6 +272,8 @@ export class Board extends O {
             _.sm.findByType(ToolBar)[0].checkSubmit();
         };
 
+
+
         draggin.Gfx.mousemove = ()=>{
             if (this.draggin)
             this.align(this.draggin)
@@ -292,5 +305,34 @@ export class Board extends O {
         }
 
         return true;
+    }
+
+    private removeEmptyRowsCols(f: number[][]):number[][]  {
+        let isEmptyRow = true;
+        for (let y = 0; y < f[0].length; y++) {
+            if (f[0][y] != undefined) {
+                isEmptyRow = false;
+            }
+        }
+        if (isEmptyRow) {
+            f.splice(0, 1)
+        }
+
+
+        let isEmptyCol = true;
+        for (let x = 0; x < f.length; x++) {
+            if (f[x][0] != undefined) {
+                isEmptyCol = false;
+            }
+        }
+        if (isEmptyCol) {
+            for (let x = 0; x < f.length; x++) {
+                f[x].splice(0, 1)
+            }
+        }
+        if (isEmptyCol || isEmptyRow)
+        return f; else {
+            return null;
+        }
     }
 }

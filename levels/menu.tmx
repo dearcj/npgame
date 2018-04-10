@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="35">
+<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="40">
  <tileset firstgid="1" source="npgame.tsx"/>
  <objectgroup name="bg111">
-  <object id="10" name="test123" gid="2" x="-32" y="1305" width="792" height="1328"/>
+  <object id="10" name="test123" gid="2" x="-32" y="555" width="792" height="578"/>
   <object id="17" gid="2" x="2099" y="1208" width="348" height="668"/>
-  <object id="19" name="tbTitle" type="TextBox" x="324" y="309" width="70" height="44">
-   <properties>
-    <property name="text" value="Level"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup name="bgsize" visible="0" locked="1">
   <object id="1" x="0" y="0" width="720" height="1280"/>
@@ -17,15 +12,15 @@
   </object>
  </objectgroup>
  <objectgroup name="gui">
-  <object id="6" name="btnnew" type="Button" gid="3" x="265" y="566" width="196.824" height="88.9412">
+  <object id="36" name="btnnew" type="Button" gid="21" x="136" y="377" width="444" height="119.539"/>
+  <object id="37" name="tbTitle" type="TextBox" x="322" y="476" width="70" height="44">
    <properties>
-    <property name="text" value="Играть"/>
+    <property name="color" type="color" value="#ff141313"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="Рейтинг игроков"/>
    </properties>
   </object>
-  <object id="7" type="Button" gid="3" x="263" y="684.059" width="196.824" height="88.9412">
-   <properties>
-    <property name="text" value="Рекорды"/>
-   </properties>
-  </object>
+  <object id="38" gid="17" x="15" y="133" width="133" height="118.75"/>
+  <object id="39" gid="40" x="-34" y="1560" width="798" height="1007"/>
  </objectgroup>
 </map>

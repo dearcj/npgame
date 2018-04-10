@@ -13,6 +13,8 @@ declare let CubicBezier: any;
 const UIEase = CubicBezier.config(0.46, 0.53, 0.93, 0.3);
 const CLICK_STEP = 3;
 export class Button extends IO {
+    prevGfxTint: number = 0xffffff;
+    prevTextTint: number = 0xffffff;
     public fadeOnMouseDown: boolean = true;
     private _downTween: any;
     private _upTween: any;
@@ -118,7 +120,11 @@ export class Button extends IO {
                 if (this.customMouseDown) this.customMouseDown();
 
                 if (this.fadeOnMouseDown) {
-                        this.gfx.tint = 0x888888;
+
+                    this.prevTextTint = this.textField.tint;
+                    this.prevGfxTint = this.gfx.tint;
+
+                    this.gfx.tint = 0x888888;
                     this.textField.tint = 0x888888;
                 }
 
@@ -171,11 +177,11 @@ export class Button extends IO {
         this.__highlight = this.setInterval(() => {
             loop += 0.38;
             let angle = 0.5 * (_.fMath.cos(loop) + 1);
-            this.gfx.color.setDark(0.4 * angle, 0.3 * angle, 0.05 * angle);
+            //this.gfx.color.setDark(0.4 * angle, 0.3 * angle, 0.05 * angle);
             //   this.gfx.color.setLight(1,1, 0.4*angle);
         }, 0);
         this.wait(0.12).call(() => {
-            this.gfx.color.setDark(0, 0, 0);
+           // this.gfx.color.setDark(0, 0, 0);
             //  this.gfx.color.setLight(1,1,1);
             this.__highlight = _.killTween(this.__highlight);
         }).apply();
@@ -190,8 +196,8 @@ export class Button extends IO {
         }
 
         if (this.fadeOnMouseDown) {
+            this.textField.tint = this.prevTextTint;
             this.gfx.tint = 0xffffff;
-            this.textField.tint = 0xffffff;
         }
     }
 }

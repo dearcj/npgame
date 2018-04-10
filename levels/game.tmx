@@ -1,71 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="44">
+<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="50">
  <tileset firstgid="1" source="npgame.tsx"/>
- <objectgroup name="bg111">
+ <objectgroup name="bg111" locked="1">
   <object id="10" name="test123" gid="2" x="-32" y="1305" width="792" height="1328"/>
   <object id="17" gid="2" x="2099" y="1208" width="348" height="668"/>
  </objectgroup>
- <objectgroup name="bgsize" visible="0" locked="1">
+ <objectgroup name="bgsize" locked="1">
   <object id="1" x="0" y="0" width="720" height="1280"/>
   <object id="13" x="360" y="-96">
    <polyline points="0,7 0,1463"/>
   </object>
  </objectgroup>
  <objectgroup name="gui">
-  <object id="34" name="board" type="Board" gid="15" x="1" y="1056.8" width="718" height="933.4"/>
+  <object id="45" gid="37" x="0" y="1030.8" width="720" height="936"/>
  </objectgroup>
- <objectgroup name="gui">
-  <object id="25" name="nextlist" type="Button" gid="3" x="847" y="1173" width="143" height="64.6191">
+ <objectgroup draworder="index" name="gui">
+  <object id="27" name="btnsubmit" type="Button" gid="3" x="71" y="831" width="176.195" height="79.6191">
    <properties>
-    <property name="text" value="next"/>
+    <property name="text" value="Завершить"/>
    </properties>
   </object>
-  <object id="26" name="prevlist" type="Button" gid="3" x="-248" y="1139" width="143" height="64.6191">
-   <properties>
-    <property name="text" value="prev"/>
-   </properties>
-  </object>
-  <object id="27" name="btnsubmit" type="Button" gid="3" x="290" y="903" width="143" height="64.6191">
-   <properties>
-    <property name="text" value="submit this solution"/>
-   </properties>
-  </object>
-  <object id="29" type="TextBox" x="48" y="695" width="153" height="45">
+  <object id="29" type="TextBox" x="42" y="679" width="153" height="45">
    <properties>
     <property name="color" type="color" value="#ff9fa0a3"/>
+    <property name="fontscale" type="float" value="0.58"/>
     <property name="text" value="Уровень:"/>
    </properties>
   </object>
-  <object id="35" name="lev" type="TextBox" x="206" y="695" width="53" height="45">
+  <object id="35" name="lev" type="TextBox" x="200" y="679" width="53" height="45">
    <properties>
     <property name="align" value="left"/>
     <property name="color" type="color" value="#ff1d1c1c"/>
+    <property name="fontscale" type="float" value="0.58"/>
     <property name="text" value="3"/>
    </properties>
   </object>
-  <object id="36" type="TextBox" x="266" y="694" width="153" height="45">
+  <object id="36" type="TextBox" x="260" y="678" width="153" height="45">
    <properties>
     <property name="color" type="color" value="#ff9fa0a3"/>
+    <property name="fontscale" type="float" value="0.58"/>
     <property name="text" value="Время:"/>
    </properties>
   </object>
-  <object id="37" name="time" type="TextBox" x="424" y="694" width="58" height="45">
+  <object id="37" name="time" type="TextBox" x="418" y="678" width="58" height="45">
    <properties>
     <property name="align" value="left"/>
     <property name="color" type="color" value="#ff1d1c1c"/>
+    <property name="fontscale" type="float" value="0.58"/>
     <property name="text" value="2:00"/>
     <property name="Зеленый" type="int" value="28"/>
    </properties>
   </object>
-  <object id="39" name="score" type="TextBox" x="34" y="56" width="105" height="45">
+  <object id="39" name="score" type="TextBox" x="34" y="43" width="105" height="45">
    <properties>
     <property name="color" type="color" value="#ff1d1c1c"/>
     <property name="fontName" value="font2-export"/>
     <property name="text" value="000"/>
    </properties>
   </object>
-  <object id="40" name="menu" type="Button" gid="19" x="627" y="106" width="92.0816" height="92.542"/>
-  <object id="41" name="restart" type="Button" gid="22" x="313" y="106.304" width="92.542" height="92.542"/>
-  <object id="43" type="ToolBar" gid="2" x="-29" y="1298" width="760" height="234"/>
+  <object id="40" name="menu" type="Button" gid="19" x="645" y="84.838" width="76" height="76.38"/>
+  <object id="41" name="btnreset" type="Button" gid="22" x="327" y="82" width="70" height="70"/>
+  <object id="43" type="ToolBar" gid="2" x="-30" y="1298" width="788" height="266"/>
+  <object id="46" name="board" type="Board" gid="38" x="28" y="676.167" width="664" height="553.333"/>
+  <object id="48" name="next" type="Button" gid="18" x="636" y="1226" width="80" height="106.168"/>
+  <object id="49" name="prev" type="Button" gid="2147483666" x="0" y="1226" width="80" height="106.168"/>
  </objectgroup>
 </map>

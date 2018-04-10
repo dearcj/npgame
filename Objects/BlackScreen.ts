@@ -13,16 +13,16 @@ export class BlackScreen extends O{
             this.gfx.width = SCR_WIDTH;
             this.gfx.height = SCR_HEIGHT;
             this.gfx.alpha = 0.;
-            new _.TweenMax(this.gfx, 0.35, {alpha: 0.9});
+            new _.TweenMax(this.gfx, 0.35, {alpha: 0.98});
         } else {
             this.gfx = new PIXI.Graphics();
             this.gfx.clear();
             this.gfx.alpha = 0;
-            new _.TweenMax(this.gfx, 0.35, {alpha: 0.7});
-            this.gfx.beginFill(0x222222, 1);
+            new _.TweenMax(this.gfx, 0.35, {alpha: 0.8});
+            this.gfx.beginFill(0xfafafa, 1);
             this.gfx.drawRect(0,0,SCR_WIDTH,SCR_HEIGHT);
             this.gfx.endFill();
-            this.gfx.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+            //this.gfx.blendMode = PIXI.BLEND_MODES.MULTIPLY;
         }
         this.gfx.interactive = true;
         this.layer.addChild(this.gfx);

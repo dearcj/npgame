@@ -1,16 +1,17 @@
 import {O} from "./O";
 import {Vec2} from "../Math";
-import {_} from "../main";
+import {_, Quad, SCR_WIDTH, TweenMax} from "../main";
 import {Board, ShapeOnBoard} from "./Board";
 import {TextBox} from "./TextBox";
 import {Button} from "./Button";
+import {LevelsShapes} from "../Stages/Game";
+import {Helper} from "./Helper";
 
 export type Shape = {
     id: number,
     textureName: string;
     fields: number[][];
 }
-
 
 export let ShapeList: { [key: number]: Shape; } = {};
 
@@ -43,7 +44,8 @@ ShapeList[4] = {
     textureName: "shape4.png",
     fields: [[1, 0],
              [1, 0],
-             [1, 1]]
+        [1, 0],
+        [1, 1]]
 };
 
 ShapeList[5] = {
@@ -62,6 +64,47 @@ ShapeList[6] = {
 };
 
 
+ShapeList[7] = {
+    id: 7,
+    textureName: "shape7.png",
+    fields: [[1,1,1,1,1]]
+};
+
+ShapeList[8] = {
+    id: 8,
+    textureName: "shape8.png",
+    fields: [[0, 1, 0],
+        [1, 1, 1],
+        [0, 1, 0]]};
+
+ShapeList[9] = {
+    id: 9,
+    textureName: "shape9.png",
+    fields: [[1, 1, 0, 0],
+        [0, 1, 1, 1],]};
+
+ShapeList[10] = {
+    id: 10,
+    textureName: "shape10.png",
+    fields: [[0, 1, 1],
+        [1, 1, 0],
+        [0, 1, 0],]};
+
+ShapeList[11] = {
+    id: 11,
+    textureName: "shape11.png",
+    fields: [ [1, 1, 1, 1],
+              [0, 1, 0, 0],]};
+
+ShapeList[12] = {
+    id: 12,
+    textureName: "shape12.png",
+    fields: [
+        [1, 1, 0],
+        [0, 1, 0],
+        [0, 1, 1],]};
+
+
 export type ShapeAmount = {
     Gfx: PIXI.Sprite,
     Text: PIXI.extras.BitmapText,
@@ -71,7 +114,11 @@ export type ShapeAmount = {
 }
 
 export class ToolBar extends O {
+    toolsContainer: PIXI.Container;
+    tween: null;
+    itemWidth: number;
     private downPos: { x: number; y: number };
+    private page: number;
     check(): any {
         throw new Error("Method not implemented.");
     }
@@ -91,38 +138,66 @@ export class ToolBar extends O {
 
         this.gfx.addChild(prev);
         p.addChildAt(this.gfx, inx);
+        this.itemWidth = (prev.width - 200) / 3;
 
         super.init(props);
-
+        this.toolsContainer = new PIXI.Container();
+        this.toolsContainer.x = -this.gfx.width / 2;
+        this.gfx.addChild(this.toolsContainer);
         let btnSubmit = _.sm.findStringId("btnsubmit");
         btnSubmit.alwaysVisible = true;
         btnSubmit.gfx.visible = false;
 
-        (<Button>btnSubmit).click = () => {
-            _.game.ShowResModal();
+
+
+
+        let level = _.game.level;
+        let levshapes = LevelsShapes[level - 1];
+        let shapes :ShapeAmount[] = [];
+        for (let x of levshapes) {
+            shapes.push({
+                Gfx: null,
+                Text: null,
+                Shape: ShapeList[x.ShapeID],
+                Amount: x.Quantity,
+                Rotation: 0,
+            })
+        }
+
+        this.setTools(shapes);
+
+        let btnNext = <Button>_.sm.findStringId("next");
+        let btnPrev = <Button>_.sm.findStringId("prev");
+
+        if (shapes.length <= 3) {
+            btnNext.gfx.visible = false;
+            btnPrev.gfx.visible = false;
+        }
+        this.page = 0;
+        btnNext.click = () => {
+            this.tween = _.killTween(this.tween);
+            this.page++;
+            this.tween = new TweenMax(this, 0.3, {x: this.x - SCR_WIDTH, ease: Quad.easeOut});
         };
-        this.setTools([{
-            Gfx: null,
-            Text: null,
-            Shape: ShapeList[5],
-            Amount: 2,
-            Rotation: 0,
-        }, {
-            Gfx: null,
-            Text: null,
-            Shape: ShapeList[6],
-            Amount: 2,
-            Rotation: 0,
-        }]);
+
+        btnPrev.click = () => {
+            if (this.page == 0) {
+                return
+            }
+            this.tween = _.killTween(this.tween);
+            this.page--;
+            this.tween = new TweenMax(this, 0.3, {x: this.x + SCR_WIDTH, ease: Quad.easeOut});
+        };
     }
 
     alighShapes() {
-        let inx = 1;
+        let inx = 0;
         for (let x of this.tools) {
+            let pos = 180 + Math.floor(inx / 3)*130 + inx * this.itemWidth;
             if (x.Gfx) {
-                x.Gfx.x = inx * 150 - x.Gfx.parent.width / 2;
-                x.Text.x = inx * 150 - x.Gfx.parent.width / 2;
-                x.Text.y = 30;
+                x.Gfx.x = pos;
+                x.Text.x = pos;
+                x.Text.y = 75;
             }
 
             inx++;
@@ -145,9 +220,8 @@ export class ToolBar extends O {
         let board = <Board>(_.sm.findStringId("board"));
         for (let x of this.tools) {
             ((x: ShapeAmount) => {
-                if (x.Amount > 0) {
                     if (!x.Gfx) {
-                        x.Gfx = _.cs(x.Shape.textureName, this.gfx);
+                        x.Gfx = _.cs(x.Shape.textureName, this.toolsContainer);
                         x.Gfx.rotation = x.Rotation;
                         let gfx = x.Gfx;
                         gfx.mousedown = () => {
@@ -160,10 +234,13 @@ export class ToolBar extends O {
                             O.rp(gfx);
                             _.sm.gui.addChild(gfx);
                             this.updateList();
-                            board.align(board.draggin)
+                            board.align(board.draggin);
                         };
 
                         gfx.mousemove = ()=>{
+                            if (board.doRemove) {
+                                return
+                            }
                             if (board.draggin && board.draggin.Gfx == gfx) {
                                 board.align(board.draggin)
                             }
@@ -184,16 +261,23 @@ export class ToolBar extends O {
                             this.checkSubmit();
                         };
                     }
+                x.Gfx.scale.set(board.gfx.scale.x);
+                if (x.Amount > 0) {
                     x.Gfx.interactive = true;
-                    x.Gfx.scale.set(board.gfx.scale.x);
+                    x.Gfx.alpha = 1;
+                    x.Gfx.tint = 0xffffff;
+                } else {
+                    x.Gfx.interactive = false;
+                    x.Gfx.alpha = 0.5;
+                    x.Gfx.tint = 0x555555;
                 }
 
                 if (!x.Text)
-                    x.Text = TextBox.createTextField({}, {text: "", align: "center"});
+                    x.Text = TextBox.createTextField({}, {fontscale: 1, text: "", align: "center"});
                 x.Text.tint = 0x020202;
                 x.Text.text = x.Amount.toString();
 
-                this.gfx.addChild(x.Text)
+                this.toolsContainer.addChild(x.Text)
             })(x);
         }
         this.checkSubmit();
@@ -212,7 +296,11 @@ export class ToolBar extends O {
 
         let btnSubmit = _.sm.findStringId("btnsubmit");
         console.log("Zeroes ", allZeroes, " drag ", board.draggin);
-        if (allZeroes && !board.draggin) {
+        if (allZeroes && !board.draggin && _.game.score <= _.game.limit) {
+
+            new TweenMax(btnSubmit.gfx.scale, 0.18, {x: btnSubmit.gfx.scale.x*1.07, y: btnSubmit.gfx.scale.y*1.07, yoyo: true, repeat: 3});
+            _.sm.removeList(_.sm.findByType(Helper));
+
             btnSubmit.gfx.visible = true;
         } else {
             btnSubmit.gfx.visible = false;

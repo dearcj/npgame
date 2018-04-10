@@ -15,7 +15,6 @@
       "./genObjectList.js",
       "./levels/",
       "levels/",
-      //      "./node_modules",
       "../../../../../pkg"
   ]
 }

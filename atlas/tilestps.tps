@@ -160,13 +160,16 @@
             <filename>../res/r2/tw.png</filename>
             <filename>../res/r2/vk.png</filename>
             <filename>../res/r2/Ресурс 63@2x.png</filename>
-            <filename>../res/r2/board.png</filename>
             <filename>../res/r2/fb.png</filename>
             <filename>../res/r2/levelgroup.png</filename>
             <filename>../res/r2/listnext.png</filename>
             <filename>../res/r2/menu.png</filename>
             <filename>../res/r2/ok.png</filename>
             <filename>../res/r2/playbtn.png</filename>
+            <filename>../res/r2/bigbg.png</filename>
+            <filename>../res/r2/onlyboard.png</filename>
+            <filename>C:/projects/npgame/res/r2/black.png</filename>
+            <filename>../res/r2/black.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

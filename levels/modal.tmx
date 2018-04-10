@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="54">
+ <tileset firstgid="1" source="npgame.tsx"/>
+ <objectgroup name="bg111"/>
+ <objectgroup name="bgsize" locked="1">
+  <object id="1" x="0" y="0" width="720" height="1280"/>
+  <object id="13" x="360" y="-96">
+   <polyline points="0,7 0,1463"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="gui">
+  <object id="29" type="BlackScreen" x="-170" y="245" width="69" height="97">
+   <properties>
+    <property name="color" type="color" value="#ffffffff"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup draworder="index" name="gui2">
+  <object id="35" type="TextBox" x="283" y="271" width="153" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="Поздравляем"/>
+   </properties>
+  </object>
+  <object id="45" type="TextBox" x="283" y="340" width="153" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="вы уместили фигуры"/>
+   </properties>
+  </object>
+  <object id="46" name="scorewin" type="TextBox" x="283" y="408" width="153" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="в 25 клеток"/>
+   </properties>
+  </object>
+  <object id="47" type="TextBox" x="284" y="547" width="153" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="0.6"/>
+    <property name="text" value="Поделиться результатом:"/>
+   </properties>
+  </object>
+  <object id="48" name="btntw" type="Button" gid="35" x="384.838" y="672" width="71.3514" height="71.3514"/>
+  <object id="49" name="btnvk" type="Button" gid="36" x="146" y="673.622" width="75" height="75"/>
+  <object id="50" name="btnok" type="Button" gid="20" x="499.135" y="672" width="70.9459" height="71.3514"/>
+  <object id="53" name="btnfb" type="Button" gid="16" x="262.73" y="672" width="71.3514" height="71.3514"/>
+ </objectgroup>
+</map>
