@@ -15,6 +15,8 @@
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 
+
+
     <script src="lib/require.js"></script>
     <script src="bundle/bundle.js"></script>
     <script>
@@ -56,5 +58,85 @@
     </script>
 </head>
 <body style="border: none; margin: 0px ">
+
+
+<script>
+    window.APP_ADDRESS = window.location;
+    window.VK_APP_ID = 6445810;
+    window.VK_PHOTO_LINK = 'photo2882845_456239374';
+
+
+    window.OK_APP_ID = 1265499136;
+
+    window.FB_APP_ID = '1017293988316284';
+    window.TW_CONSUMER_KEY = 'Le8ZS1UJpA4BJicMTkULR1pu2';
+</script>
+
+
+
+
+<script>
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : window.FB_APP_ID,
+            xfbml      : true,
+            version    : 'v2.5'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+   /* window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+            t._e.push(f);
+        };
+
+        return t;
+    }(document, "script", "twitter-wjs")); */
+
+</script>
+
+
+
+
+
+<script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
+<script type="text/javascript">
+    VK.init({
+        apiId: window.VK_APP_ID
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

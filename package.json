@@ -11,7 +11,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "twitter-login-client": "^1.0.3"
+  },
   "devDependencies": {
     "@types/jquery": "^3.3.0",
     "@types/pixi-spine": "^1.4.2",

@@ -4,6 +4,7 @@ import {O} from "../Objects/O";
 import {Button} from "../Objects/Button";
 import {TextBox} from "../Objects/TextBox";
 import {Helper} from "../Objects/Helper";
+import {okpost, twpost, vkpost} from "../Socials";
 
 type LevelShape = {
     ShapeID: number,
@@ -64,6 +65,7 @@ export class Game extends Stage {
 
 
     submitScore(s: number, social_id: string, name: string, last_name: string) {
+        if (s == 0) return;
         $.post( "http://localhost:80/index.php", { func: "submit", score: s.toString(), social_id: social_id, name: name, last_name: last_name   })
             .done(( data ) => {
 
@@ -135,9 +137,24 @@ export class Game extends Stage {
         let xxx = 'клеток';
         if (ending == 1) xxx = 'клетку';
         if (ending == 2 || ending == 3 || ending == 4 ) xxx = 'клетки';
-
-
         (<TextBox>win).text = 'в ' + this.score.toString() + ' ' + xxx;
+
+        let vk = <Button>_.sm.findStringId("btnvk", this.resModal);
+        let tw = <Button>_.sm.findStringId("btntw", this.resModal);
+        let ok = <Button>_.sm.findStringId("btnok", this.resModal);
+        let fb = <Button>_.sm.findStringId("btnfb", this.resModal);
+        vk.click = () => {
+            vkpost("tessssst");
+        };
+
+        ok.click = () => {
+            okpost("tessssst");
+        }
+
+        tw.click = () => {
+            twpost("tessssst");
+        }
+
         /*(<Button>btnClose).click = () => {
             this.CloseResModal();
         };*/
@@ -146,8 +163,6 @@ export class Game extends Stage {
         //    (<Button>btnSubmit).click = () => {
         //        this.CloseResModal();
         //    };
-
-
     }
 
     SetScore(x: number) {

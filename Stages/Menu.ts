@@ -2,6 +2,7 @@ import {Stage} from "./Stage";
 import {$, _} from "../main";
 import {Button} from "../Objects/Button";
 import {TextBox} from "../Objects/TextBox";
+import {vkpost} from "../Socials";
 
 export class Menu extends Stage {
     addLine(inx: number, data: any) {
@@ -29,8 +30,11 @@ export class Menu extends Stage {
         super.onShow();
         _.lm.load(this, 'menu', null);
         (<Button>_.sm.findStringId("btnnew")).click = ()=>{
+           // vkpost("lalalal");
             _.sm.openStage(_.game)
         };
+
+        _.game.ShowResModal();
 
         this.getLeaderboard();
     }

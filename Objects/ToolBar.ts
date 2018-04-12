@@ -19,31 +19,31 @@ ShapeList[1] = {
     id: 1,
     textureName: "shape1.png",
     fields: [[1, 1, 1],
-             [0, 0, 1],
-             [0, 0, 1]]
+        [0, 0, 1],
+        [0, 0, 1]]
 };
 
 ShapeList[2] = {
     id: 2,
     textureName: "shape2.png",
     fields: [[1, 1, 1],
-             [0, 1, 0],
-             [0, 1, 0]]
+        [0, 1, 0],
+        [0, 1, 0]]
 };
 
 ShapeList[3] = {
     id: 3,
     textureName: "shape3.png",
     fields: [[1, 1, 1],
-             [0, 0, 1],
-             [0, 0, 1]]
+        [0, 0, 1],
+        [0, 0, 1]]
 };
 
 ShapeList[4] = {
     id: 4,
     textureName: "shape4.png",
     fields: [[1, 0],
-             [1, 0],
+        [1, 0],
         [1, 0],
         [1, 1]]
 };
@@ -52,15 +52,15 @@ ShapeList[5] = {
     id: 5,
     textureName: "shape5.png",
     fields: [[1, 1, 0],
-             [0, 1, 1],
-             [0, 0, 1]]
+        [0, 1, 1],
+        [0, 0, 1]]
 };
 
 ShapeList[6] = {
     id: 6,
     textureName: "shape6.png",
     fields: [[1, 1, 0],
-             [1, 1, 1]]
+        [1, 1, 1]]
 };
 
 
@@ -94,7 +94,7 @@ ShapeList[11] = {
     id: 11,
     textureName: "shape11.png",
     fields: [ [1, 1, 1, 1],
-              [0, 1, 0, 0],]};
+        [0, 1, 0, 0],]};
 
 ShapeList[12] = {
     id: 12,
@@ -220,47 +220,52 @@ export class ToolBar extends O {
         let board = <Board>(_.sm.findStringId("board"));
         for (let x of this.tools) {
             ((x: ShapeAmount) => {
-                    if (!x.Gfx) {
-                        x.Gfx = _.cs(x.Shape.textureName, this.toolsContainer);
-                        x.Gfx.rotation = x.Rotation;
-                        let gfx = x.Gfx;
-                        gfx.mousedown = () => {
-                            this.downPos = {x: _.cursorPos.x, y: _.cursorPos.y};
-                            board.draggin = {Rotation: x.Rotation, InsideBoard: false, ShapeAmount:x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx};
-                            if (x.Gfx) {
-                                x.Gfx = null;
-                                x.Amount--;
-                            }
-                            O.rp(gfx);
-                            _.sm.gui.addChild(gfx);
-                            this.updateList();
-                            board.align(board.draggin);
-                        };
+                if (!x.Gfx) {
+                    x.Gfx = _.cs(x.Shape.textureName, this.toolsContainer);
+                    x.Gfx.rotation = x.Rotation;
+                    let gfx = x.Gfx;
+                    let md = () => {
+                        this.downPos = {x: _.cursorPos.x, y: _.cursorPos.y};
+                        board.draggin = {Rotation: x.Rotation, InsideBoard: false, ShapeAmount:x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx};
+                        if (x.Gfx) {
+                            x.Gfx = null;
+                            x.Amount--;
+                        }
+                        O.rp(gfx);
+                        _.sm.gui.addChild(gfx);
+                        this.updateList();
+                        board.align(board.draggin);
+                    };
 
-                        gfx.mousemove = ()=>{
-                            if (board.doRemove) {
-                                return
-                            }
-                            if (board.draggin && board.draggin.Gfx == gfx) {
-                                board.align(board.draggin)
-                            }
-                        };
-
-                        gfx.mouseup = ()=>{
-                            if  (Math.sqrt((this.downPos.x - _.cursorPos.x)*(this.downPos.x - _.cursorPos.x) +
+                    gfx.touchstart = md;
+                    gfx.mousedown = md;
+                    let mm = ()=>{
+                        if (board.doRemove) {
+                            return
+                        }
+                        if (board.draggin && board.draggin.Gfx == gfx) {
+                            board.align(board.draggin)
+                        }
+                    };
+                    gfx.mousemove = mm;
+                    gfx.touchmove = mm;
+                    let mu = ()=>{
+                        if  (Math.sqrt((this.downPos.x - _.cursorPos.x)*(this.downPos.x - _.cursorPos.x) +
                             (this.downPos.y - _.cursorPos.y)*(this.downPos.y - _.cursorPos.y)) < 30) {
-                                x.Rotation += Math.PI/ 2;
-                                if (x.Gfx)
+                            x.Rotation += Math.PI/ 2;
+                            if (x.Gfx)
                                 x.Gfx.rotation = x.Rotation;
-                            }
-                            if (board.tryToPut(board.draggin) == true) {
-                               } else {
-                                this.returnShape(board.draggin);
-                            }
-                            board.draggin = null;
-                            this.checkSubmit();
-                        };
-                    }
+                        }
+                        if (board.tryToPut(board.draggin) == true) {
+                        } else {
+                            this.returnShape(board.draggin);
+                        }
+                        board.draggin = null;
+                        this.checkSubmit();
+                    };
+                    gfx.touchend = gfx.touchendoutside = mu;
+                    gfx.mouseup = gfx.mouseupoutside = mu;
+                }
                 x.Gfx.scale.set(board.gfx.scale.x);
                 if (x.Amount > 0) {
                     x.Gfx.interactive = true;
@@ -288,9 +293,9 @@ export class ToolBar extends O {
     public checkSubmit() {
         let allZeroes = true;
         for (let x of this.tools) {
-                if (x.Amount > 0) {
-                    allZeroes = false;
-                }
+            if (x.Amount > 0) {
+                allZeroes = false;
+            }
         }
         let board = _.sm.findByType(Board)[0];
 
