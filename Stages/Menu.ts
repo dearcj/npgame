@@ -34,8 +34,6 @@ export class Menu extends Stage {
             _.sm.openStage(_.game)
         };
 
-        _.game.ShowResModal();
-
         this.getLeaderboard();
     }
 }

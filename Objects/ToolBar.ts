@@ -52,8 +52,8 @@ ShapeList[5] = {
     id: 5,
     textureName: "shape5.png",
     fields: [[1, 1, 0],
-        [0, 1, 1],
-        [0, 0, 1]]
+             [0, 1, 1],
+             [0, 0, 1]]
 };
 
 ShapeList[6] = {
@@ -87,8 +87,8 @@ ShapeList[10] = {
     id: 10,
     textureName: "shape10.png",
     fields: [[0, 1, 1],
-        [1, 1, 0],
-        [0, 1, 0],]};
+             [1, 1, 0],
+             [0, 1, 0],]};
 
 ShapeList[11] = {
     id: 11,
@@ -175,6 +175,9 @@ export class ToolBar extends O {
         }
         this.page = 0;
         btnNext.click = () => {
+            if (this.page == 1) {
+                return
+            }
             this.tween = _.killTween(this.tween);
             this.page++;
             this.tween = new TweenMax(this, 0.3, {x: this.x - SCR_WIDTH, ease: Quad.easeOut});
@@ -197,7 +200,7 @@ export class ToolBar extends O {
             if (x.Gfx) {
                 x.Gfx.x = pos;
                 x.Text.x = pos;
-                x.Text.y = 75;
+                x.Text.y = 50;
             }
 
             inx++;
@@ -224,8 +227,8 @@ export class ToolBar extends O {
                     x.Gfx = _.cs(x.Shape.textureName, this.toolsContainer);
                     x.Gfx.rotation = x.Rotation;
                     let gfx = x.Gfx;
-                    let md = () => {
-                        this.downPos = {x: _.cursorPos.x, y: _.cursorPos.y};
+                    let md = (e) => {
+                        this.downPos = {x: e.data.global.x, y: e.data.global.y};
                         board.draggin = {Rotation: x.Rotation, InsideBoard: false, ShapeAmount:x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx};
                         if (x.Gfx) {
                             x.Gfx = null;
@@ -234,24 +237,24 @@ export class ToolBar extends O {
                         O.rp(gfx);
                         _.sm.gui.addChild(gfx);
                         this.updateList();
-                        board.align(board.draggin);
+                        board.align(board.draggin, e);
                     };
 
                     gfx.touchstart = md;
                     gfx.mousedown = md;
-                    let mm = ()=>{
+                    let mm = (e)=>{
                         if (board.doRemove) {
                             return
                         }
                         if (board.draggin && board.draggin.Gfx == gfx) {
-                            board.align(board.draggin)
+                            board.align(board.draggin, e)
                         }
                     };
                     gfx.mousemove = mm;
                     gfx.touchmove = mm;
-                    let mu = ()=>{
-                        if  (Math.sqrt((this.downPos.x - _.cursorPos.x)*(this.downPos.x - _.cursorPos.x) +
-                            (this.downPos.y - _.cursorPos.y)*(this.downPos.y - _.cursorPos.y)) < 30) {
+                    let mu = (e)=>{
+                        if  (Math.sqrt((this.downPos.x - e.data.global.x)*(this.downPos.x - e.data.global.x) +
+                            (this.downPos.y - e.data.global.y)*(this.downPos.y - e.data.global.y)) < 30) {
                             x.Rotation += Math.PI/ 2;
                             if (x.Gfx)
                                 x.Gfx.rotation = x.Rotation;

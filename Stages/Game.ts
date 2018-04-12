@@ -4,7 +4,7 @@ import {O} from "../Objects/O";
 import {Button} from "../Objects/Button";
 import {TextBox} from "../Objects/TextBox";
 import {Helper} from "../Objects/Helper";
-import {okpost, twpost, vkpost} from "../Socials";
+import {fbpost, okpost, twpost, vkpost} from "../Socials";
 
 type LevelShape = {
     ShapeID: number,
@@ -38,19 +38,19 @@ export let LevelsShapes: Array<Array<LevelShape>> = [
     ],
     [
         {
-            ShapeID: 1,
-            Quantity: 1,
+            ShapeID: 10,
+            Quantity: 2,
         },
         {
-            ShapeID: 2,
-            Quantity: 1,
+            ShapeID: 12,
+            Quantity: 2,
         },
         {
-            ShapeID: 3,
-            Quantity: 1,
+            ShapeID: 9,
+            Quantity: 2,
         },
         {
-            ShapeID: 4,
+            ShapeID: 5,
             Quantity: 1,
         }
     ]];
@@ -59,7 +59,7 @@ export class Game extends Stage {
     private resModal: Array<O>;
     public score: number = 0;
     secs: number = 0;
-    level: number = 1;
+    level: number = 3;
     private timeInterval: any;
     public limit: number = 0;
 
@@ -147,22 +147,9 @@ export class Game extends Stage {
             vkpost("tessssst");
         };
 
-        ok.click = () => {
-            okpost("tessssst");
+        fb.click = () => {
+            fbpost("tessssst");
         }
-
-        tw.click = () => {
-            twpost("tessssst");
-        }
-
-        /*(<Button>btnClose).click = () => {
-            this.CloseResModal();
-        };*/
-
-        //    let btnSubmit = _.sm.findStringId("btnsubmit", this.resModal);
-        //    (<Button>btnSubmit).click = () => {
-        //        this.CloseResModal();
-        //    };
     }
 
     SetScore(x: number) {

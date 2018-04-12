@@ -125,8 +125,8 @@ export class Board extends O {
         return true
     }
 
-    align(draggin: ShapeOnBoard) {
-        let loc = this.gfx.toLocal(_.cursorPos, _.sm.gui);
+    align(draggin: ShapeOnBoard, e: any) {
+        let loc = this.gfx.toLocal(e.data.global, _.sm.gui);
         let cx = this.cellSize;
         loc.x = Math.floor((loc.x) / cx) * (cx);
         loc.y = Math.floor((loc.y) / cx) * (cx);
@@ -260,7 +260,7 @@ export class Board extends O {
     }
 
     private SetDragHandlers(draggin: ShapeOnBoard) {
-        draggin.Gfx.mousedown = () => {
+        draggin.Gfx.mousedown = draggin.Gfx.touchstart = (e) => {
             if (draggin.InsideBoard) {
                 this.pullShape(draggin);
             }
@@ -268,18 +268,19 @@ export class Board extends O {
 
             draggin.Gfx.position.x = _.cursorPos.x;
             draggin.Gfx.position.y = _.cursorPos.y;
-            this.align(this.draggin);
+            this.align(this.draggin, e);
             _.sm.findByType(ToolBar)[0].checkSubmit();
         };
 
 
 
-        draggin.Gfx.mousemove = ()=>{
+        draggin.Gfx.mousemove = draggin.Gfx.touchmove =(e)=>{
             if (this.draggin)
-            this.align(this.draggin)
+            this.align(this.draggin, e)
         };
 
-        draggin.Gfx.mouseup = (e)=>{
+        draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside =  (e)=>{
+            if (this.draggin)
             if (this.tryToPut(this.draggin) == false) {
                 let toolbar = _.sm.findByType(ToolBar)[0];
                 toolbar.returnShape(this.draggin);

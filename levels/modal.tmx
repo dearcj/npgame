@@ -44,9 +44,7 @@
     <property name="text" value="Поделиться результатом:"/>
    </properties>
   </object>
-  <object id="48" name="btntw" type="Button" gid="35" x="384.838" y="672" width="71.3514" height="71.3514"/>
-  <object id="49" name="btnvk" type="Button" gid="36" x="146" y="673.622" width="75" height="75"/>
-  <object id="50" name="btnok" type="Button" gid="20" x="499.135" y="672" width="70.9459" height="71.3514"/>
-  <object id="53" name="btnfb" type="Button" gid="16" x="262.73" y="672" width="71.3514" height="71.3514"/>
+  <object id="49" name="btnvk" type="Button" gid="36" x="265" y="673.622" width="75" height="75"/>
+  <object id="53" name="btnfb" type="Button" gid="16" x="381.73" y="672" width="71.3514" height="71.3514"/>
  </objectgroup>
 </map>
