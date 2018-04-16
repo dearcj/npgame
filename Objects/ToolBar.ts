@@ -240,6 +240,7 @@ export class ToolBar extends O {
                     x.Gfx.rotation = x.Rotation;
                     let gfx = x.Gfx;
                     let md = (e) => {
+                        if (board.draggin && board.draggin.Gfx == gfx) return;
                         this.downPos = {x: e.data.global.x, y: e.data.global.y};
                         board.draggin = {Rotation: x.Rotation, InsideBoard: false, ShapeAmount:x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx};
                         if (x.Gfx) {

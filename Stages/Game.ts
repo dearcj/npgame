@@ -145,11 +145,12 @@ export class Game extends Stage {
         let ok = <Button>_.sm.findStringId("btnok", this.resModal);
         let fb = <Button>_.sm.findStringId("btnfb", this.resModal);
         vk.click = () => {
-            vkpost("tessssst");
+            vkpost(`Упакуй меня, если сможешь!
+Эта математическая игра будет покруче 2048`);
         };
 
         fb.click = () => {
-            fbpost("tessssst");
+            fbpost("");
         }
     }
 

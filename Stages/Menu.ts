@@ -35,6 +35,7 @@ export class Menu extends Stage {
            // vkpost("lalalal");
             _.sm.openStage(_.game)
         };
+    //    _.game.ShowResModal();
 
         this.getLeaderboard();
     }

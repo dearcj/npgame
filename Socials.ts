@@ -105,7 +105,7 @@ export function twpost(t, img, imgNo, hash) {
     window.open(href);
 }
 
-export function fbpost(text) {
+export function fbpost() {
     FB.login(function(response){
         let accessToken = response.authResponse.accessToken;
         FB.api('/me', 'get', {fields: "name"}, (x) => {

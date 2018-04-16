@@ -2007,7 +2007,7 @@ define("Socials", ["require", "exports", "main", "node_modules/twitter-login-cli
         window.open(href);
     }
     exports.twpost = twpost;
-    function fbpost(text) {
+    function fbpost() {
         FB.login(function (response) {
             var accessToken = response.authResponse.accessToken;
             FB.api('/me', 'get', { fields: "name" }, function (x) {
@@ -2121,6 +2121,7 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
                 // vkpost("lalalal");
                 main_14._.sm.openStage(main_14._.game);
             };
+            //    _.game.ShowResModal();
             this.getLeaderboard();
         };
         return Menu;
@@ -2255,10 +2256,10 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             var ok = main_15._.sm.findStringId("btnok", this.resModal);
             var fb = main_15._.sm.findStringId("btnfb", this.resModal);
             vk.click = function () {
-                Socials_1.vkpost("tessssst");
+                Socials_1.vkpost("\u0423\u043F\u0430\u043A\u0443\u0439 \u043C\u0435\u043D\u044F, \u0435\u0441\u043B\u0438 \u0441\u043C\u043E\u0436\u0435\u0448\u044C!\n\u042D\u0442\u0430 \u043C\u0430\u0442\u0435\u043C\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u0438\u0433\u0440\u0430 \u0431\u0443\u0434\u0435\u0442 \u043F\u043E\u043A\u0440\u0443\u0447\u0435 2048");
             };
             fb.click = function () {
-                Socials_1.fbpost("tessssst");
+                Socials_1.fbpost("");
             };
         };
         Game.prototype.SetScore = function (x) {
@@ -2474,6 +2475,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                         x.Gfx.rotation = x.Rotation;
                         var gfx_1 = x.Gfx;
                         var md = function (e) {
+                            if (board.draggin && board.draggin.Gfx == gfx_1)
+                                return;
                             _this.downPos = { x: e.data.global.x, y: e.data.global.y };
                             board.draggin = { Rotation: x.Rotation, InsideBoard: false, ShapeAmount: x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx_1 };
                             if (x.Gfx) {
