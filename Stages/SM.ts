@@ -148,9 +148,6 @@ export class SM {
 
         this.superstage.addChild(this.main);
         let w: any = window;
-        let ui: any = w.PIXI.UI;
-        this.pixiUiStage = new ui.Stage(SCR_WIDTH, SCR_HEIGHT);
-        this.superstage.addChild(this.pixiUiStage);
         this.superstage.addChild(this.effects);
         this.superstage.addChild(this.olgui);
 

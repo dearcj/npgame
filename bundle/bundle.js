@@ -3834,9 +3834,6 @@ define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], fu
             this.fonts.interactive = false;
             this.superstage.addChild(this.main);
             var w = window;
-            var ui = w.PIXI.UI;
-            this.pixiUiStage = new ui.Stage(main_21.SCR_WIDTH, main_21.SCR_HEIGHT);
-            this.superstage.addChild(this.pixiUiStage);
             this.superstage.addChild(this.effects);
             this.superstage.addChild(this.olgui);
             this.superstage.addChild(this.gui);
