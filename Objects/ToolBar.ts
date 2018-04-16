@@ -174,6 +174,7 @@ export class ToolBar extends O {
             btnPrev.gfx.visible = false;
         }
         this.page = 0;
+
         btnNext.click = () => {
             if (this.page == 1) {
                 return

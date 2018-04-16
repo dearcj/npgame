@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="42">
+ <tileset firstgid="1" source="npgame.tsx"/>
+ <objectgroup name="bg111"/>
+ <objectgroup name="bgsize" visible="0" locked="1">
+  <object id="1" x="0" y="0" width="720" height="1280"/>
+  <object id="13" x="360" y="-96">
+   <polyline points="0,7 0,1463"/>
+  </object>
+ </objectgroup>
+ <objectgroup draworder="index" name="gui">
+  <object id="37" gid="1" x="-4" y="192" width="313" height="194"/>
+  <object id="38" x="0" y="0" width="22" height="15"/>
+  <object id="39" type="TextBox" x="-1" y="2" width="153" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="Перетащите фигуры так,"/>
+   </properties>
+  </object>
+  <object id="40" type="TextBox" x="0" y="70" width="285" height="66">
+   <properties>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="чтобы их суммарная площадь была меньше 30"/>
+   </properties>
+  </object>
+  <object id="41" type="TextBox" x="206" y="138" width="104" height="66">
+   <properties>
+    <property name="align" value="right"/>
+    <property name="color" type="color" value="#ff11100f"/>
+    <property name="fontscale" type="float" value="1"/>
+    <property name="text" value="30"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
