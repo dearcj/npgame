@@ -28,14 +28,14 @@ export class Menu extends Stage {
     }
 
     onShow() {
-    //    _.game.submitScore(22, "test", "test", "test");
         super.onShow();
         _.lm.load(this, 'menu', null);
         (<Button>_.sm.findStringId("btnnew")).click = ()=>{
            // vkpost("lalalal");
             _.sm.openStage(_.game)
         };
-    //    _.game.ShowResModal();
+        if ((<any>window).RESULT_MODAL_IN_MENU)
+        _.game.ShowResModal();
 
         this.getLeaderboard();
     }

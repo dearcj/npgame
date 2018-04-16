@@ -2114,14 +2114,14 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
             });
         };
         Menu.prototype.onShow = function () {
-            //    _.game.submitScore(22, "test", "test", "test");
             _super.prototype.onShow.call(this);
             main_14._.lm.load(this, 'menu', null);
             main_14._.sm.findStringId("btnnew").click = function () {
                 // vkpost("lalalal");
                 main_14._.sm.openStage(main_14._.game);
             };
-            //    _.game.ShowResModal();
+            if (window.RESULT_MODAL_IN_MENU)
+                main_14._.game.ShowResModal();
             this.getLeaderboard();
         };
         return Menu;
