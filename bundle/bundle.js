@@ -2120,8 +2120,10 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
                 // vkpost("lalalal");
                 main_14._.sm.openStage(main_14._.game);
             };
-            if (window.RESULT_MODAL_IN_MENU)
+            if (window.RESULT_MODAL_IN_MENU) {
+                main_14._.game.score = 999;
                 main_14._.game.ShowResModal();
+            }
             this.getLeaderboard();
         };
         return Menu;

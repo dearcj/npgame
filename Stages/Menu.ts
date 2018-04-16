@@ -34,8 +34,10 @@ export class Menu extends Stage {
            // vkpost("lalalal");
             _.sm.openStage(_.game)
         };
-        if ((<any>window).RESULT_MODAL_IN_MENU)
-        _.game.ShowResModal();
+        if ((<any>window).RESULT_MODAL_IN_MENU) {
+            _.game.score = 999;
+            _.game.ShowResModal();
+        }
 
         this.getLeaderboard();
     }
