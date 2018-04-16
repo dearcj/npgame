@@ -5,6 +5,7 @@ import {Button} from "../Objects/Button";
 import {TextBox} from "../Objects/TextBox";
 import {Helper} from "../Objects/Helper";
 import {fbpost, okpost, twpost, vkpost} from "../Socials";
+import {API_PHP_FILE} from "./Menu";
 
 type LevelShape = {
     ShapeID: number,
@@ -59,14 +60,14 @@ export class Game extends Stage {
     private resModal: Array<O>;
     public score: number = 0;
     secs: number = 0;
-    level: number = 3;
+    level: number = 1;
     private timeInterval: any;
     public limit: number = 0;
 
 
     submitScore(s: number, social_id: string, name: string, last_name: string) {
         if (s == 0) return;
-        $.post( "http://localhost:80/index.php", { func: "submit", score: s.toString(), social_id: social_id, name: name, last_name: last_name   })
+        $.post( API_PHP_FILE, { func: "submit", score: s.toString(), social_id: social_id, name: name, last_name: last_name   })
             .done(( data ) => {
 
             });

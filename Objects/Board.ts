@@ -31,6 +31,14 @@ export class Board extends O {
     private fields: number[][] = [];
     public graphics: PIXI.Graphics;
 
+    onDestroy() {
+        super.onDestroy();
+        for (let x of this.shapesOnBoard) {
+            ToolBar.ResetListeners(x.Gfx);
+            O.rp(x.Gfx);
+        }
+    }
+
     getRotatedShape(shape: Shape, rotation: number): Shape {
         let f = shape.fields;
         let c = Math.cos(rotation);

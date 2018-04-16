@@ -7,9 +7,7 @@ declare let APP_ADDRESS;
 declare let OK_APP_ID: any;
 declare let twttr: any;
 declare let TW_CONSUMER_KEY: any;
-twttr.init({api_key: TW_CONSUMER_KEY,
-    request_url: "http://localhost/twlogin.php",
-});
+
 export function vkpost(text: string) {
 
 

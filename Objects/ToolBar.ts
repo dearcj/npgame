@@ -220,6 +220,17 @@ export class ToolBar extends O {
 
     }
 
+    static ResetListeners(gfx: PIXI.Sprite) {
+        gfx.touchstart = null;
+        gfx.mousedown = null;
+
+        gfx.touchend = gfx.touchendoutside = null;
+        gfx.mouseup = gfx.mouseupoutside = null;
+
+        gfx.mousemove = null;
+        gfx.touchmove = null;
+    }
+
     private updateList() {
         let board = <Board>(_.sm.findStringId("board"));
         for (let x of this.tools) {
@@ -250,10 +261,14 @@ export class ToolBar extends O {
                         if (board.draggin && board.draggin.Gfx == gfx) {
                             board.align(board.draggin, e)
                         }
+                      //  board.draggin.draggin = true;
+
                     };
                     gfx.mousemove = mm;
                     gfx.touchmove = mm;
                     let mu = (e)=>{
+                        if (!board.draggin) return;
+                      //  board.draggin.draggin = false;
                         if  (Math.sqrt((this.downPos.x - e.data.global.x)*(this.downPos.x - e.data.global.x) +
                             (this.downPos.y - e.data.global.y)*(this.downPos.y - e.data.global.y)) < 30) {
                             x.Rotation += Math.PI/ 2;

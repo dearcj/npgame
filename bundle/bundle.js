@@ -1951,9 +1951,6 @@ define("Objects/Helper", ["require", "exports", "Objects/O", "main", "Objects/Te
 define("Socials", ["require", "exports", "main", "node_modules/twitter-login-client/src/twitter-client.js"], function (require, exports, main_13) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    twttr.init({ api_key: TW_CONSUMER_KEY,
-        request_url: "http://localhost/twlogin.php",
-    });
     function vkpost(text) {
         function authInfo(response) {
             main_13._.game.submitScore(main_13._.game.score, 'VK:' + response.session.mid, response.session.user.first_name, response.session.user.last_name);
@@ -2086,7 +2083,51 @@ define("Socials", ["require", "exports", "main", "node_modules/twitter-login-cli
     }
     exports.fbpost = fbpost;
 });
-define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/Helper", "Socials"], function (require, exports, Stage_1, main_14, Helper_1, Socials_1) {
+define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/TextBox"], function (require, exports, Stage_1, main_14, TextBox_3) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.API_PHP_FILE = window.API_PHP_FILE;
+    var Menu = /** @class */ (function (_super) {
+        __extends(Menu, _super);
+        function Menu() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        Menu.prototype.addLine = function (inx, data) {
+            if (main_14._.sm.stage != this)
+                return;
+            var tbname = new TextBox_3.TextBox([180, 580 + inx * 60]);
+            tbname.init({ text: data.name + (data.lastname != "") ? (" " + data.lastname) : "" });
+            var tbscore = new TextBox_3.TextBox([570, 580 + inx * 60]);
+            tbscore.init({ align: "right", text: data.score.toString() });
+        };
+        Menu.prototype.getLeaderboard = function () {
+            var _this = this;
+            main_14.$.post(exports.API_PHP_FILE, { func: "leaderboard" })
+                .done(function (data) {
+                var d = JSON.parse(data);
+                var inx = 0;
+                for (var _i = 0, d_1 = d; _i < d_1.length; _i++) {
+                    var x = d_1[_i];
+                    _this.addLine(inx, d[inx]);
+                    inx++;
+                } ///
+            });
+        };
+        Menu.prototype.onShow = function () {
+            //    _.game.submitScore(22, "test", "test", "test");
+            _super.prototype.onShow.call(this);
+            main_14._.lm.load(this, 'menu', null);
+            main_14._.sm.findStringId("btnnew").click = function () {
+                // vkpost("lalalal");
+                main_14._.sm.openStage(main_14._.game);
+            };
+            this.getLeaderboard();
+        };
+        return Menu;
+    }(Stage_1.Stage));
+    exports.Menu = Menu;
+});
+define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/Helper", "Socials", "Stages/Menu"], function (require, exports, Stage_2, main_15, Helper_1, Socials_1, Menu_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LevelsShapes = [
@@ -2139,42 +2180,42 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.score = 0;
             _this.secs = 0;
-            _this.level = 3;
+            _this.level = 1;
             _this.limit = 0;
             return _this;
         }
         Game.prototype.submitScore = function (s, social_id, name, last_name) {
             if (s == 0)
                 return;
-            main_14.$.post("http://localhost:80/index.php", { func: "submit", score: s.toString(), social_id: social_id, name: name, last_name: last_name })
+            main_15.$.post(Menu_1.API_PHP_FILE, { func: "submit", score: s.toString(), social_id: social_id, name: name, last_name: last_name })
                 .done(function (data) {
             });
         };
         Game.prototype.onShow = function () {
             var _this = this;
             _super.prototype.onShow.call(this);
-            main_14._.lm.load(this, 'game', null);
-            var btnSubmit = main_14._.sm.findStringId("btnsubmit");
+            main_15._.lm.load(this, 'game', null);
+            var btnSubmit = main_15._.sm.findStringId("btnsubmit");
             btnSubmit.textField.tint = 0x111111;
             btnSubmit.prevTextTint = 0x111111;
             btnSubmit.click = function () {
                 if (_this.level == 3) {
-                    main_14._.game.ShowResModal();
+                    main_15._.game.ShowResModal();
                 }
                 else {
                     _this.level++;
-                    main_14._.sm.openStage(main_14._.game);
+                    main_15._.sm.openStage(main_15._.game);
                 }
             };
-            var btnReset = main_14._.sm.findStringId("btnreset", this.resModal);
+            var btnReset = main_15._.sm.findStringId("btnreset", this.resModal);
             btnReset.click = function () {
-                main_14._.sm.openStage(main_14._.game);
+                main_15._.sm.openStage(main_15._.game);
             };
-            var lev = main_14._.sm.findStringId("lev", this.resModal);
+            var lev = main_15._.sm.findStringId("lev", this.resModal);
             lev.text = this.level.toString();
             this.secs = 0;
             this.updateTime();
-            this.timeInterval = main_14._.sm.camera.setInterval(function () {
+            this.timeInterval = main_15._.sm.camera.setInterval(function () {
                 _this.secs++;
                 _this.updateTime();
             }, 1);
@@ -2186,22 +2227,22 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
                 this.limit = 18;
             }
             if (this.level == 1 || this.level == 2) {
-                var helper = new Helper_1.Helper([main_14.SCR_WIDTH / 2, 180]);
+                var helper = new Helper_1.Helper([main_15.SCR_WIDTH / 2, 180]);
                 helper.init({});
             }
         };
         Game.prototype.CloseResModal = function () {
-            main_14._.sm.removeList(this.resModal);
+            main_15._.sm.removeList(this.resModal);
         };
         Game.prototype.onHide = function (s) {
-            this.timeInterval = main_14._.killTween(this.timeInterval);
+            this.timeInterval = main_15._.killTween(this.timeInterval);
             _super.prototype.onHide.call(this, s);
         };
         Game.prototype.ShowResModal = function () {
-            this.timeInterval = main_14._.killTween(this.timeInterval);
-            this.resModal = main_14._.lm.load(main_14._.game, 'modal', null);
-            var btnClose = main_14._.sm.findStringId("btncancel", this.resModal);
-            var win = main_14._.sm.findStringId("scorewin", this.resModal);
+            this.timeInterval = main_15._.killTween(this.timeInterval);
+            this.resModal = main_15._.lm.load(main_15._.game, 'modal', null);
+            var btnClose = main_15._.sm.findStringId("btncancel", this.resModal);
+            var win = main_15._.sm.findStringId("scorewin", this.resModal);
             var ending = this.score % 10;
             var xxx = 'клеток';
             if (ending == 1)
@@ -2209,10 +2250,10 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             if (ending == 2 || ending == 3 || ending == 4)
                 xxx = 'клетки';
             win.text = 'в ' + this.score.toString() + ' ' + xxx;
-            var vk = main_14._.sm.findStringId("btnvk", this.resModal);
-            var tw = main_14._.sm.findStringId("btntw", this.resModal);
-            var ok = main_14._.sm.findStringId("btnok", this.resModal);
-            var fb = main_14._.sm.findStringId("btnfb", this.resModal);
+            var vk = main_15._.sm.findStringId("btnvk", this.resModal);
+            var tw = main_15._.sm.findStringId("btntw", this.resModal);
+            var ok = main_15._.sm.findStringId("btnok", this.resModal);
+            var fb = main_15._.sm.findStringId("btnfb", this.resModal);
             vk.click = function () {
                 Socials_1.vkpost("tessssst");
             };
@@ -2223,9 +2264,9 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
         Game.prototype.SetScore = function (x) {
             this.score = x;
             if (x == 0)
-                main_14._.sm.findStringId("score").text = '';
+                main_15._.sm.findStringId("score").text = '';
             else
-                main_14._.sm.findStringId("score").text = this.AddZeroes(x);
+                main_15._.sm.findStringId("score").text = this.AddZeroes(x);
         };
         Game.prototype.AddZeroes = function (x) {
             if (x < 10)
@@ -2237,14 +2278,14 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
         Game.prototype.updateTime = function () {
             var mins = Math.floor(this.secs / 60);
             var secs = this.secs % 60;
-            var time = main_14._.sm.findStringId("time");
+            var time = main_15._.sm.findStringId("time");
             time.text = mins + ":" + (secs > 10 ? secs.toString() : "0" + secs.toString());
         };
         return Game;
-    }(Stage_1.Stage));
+    }(Stage_2.Stage));
     exports.Game = Game;
 });
-define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/Board", "Objects/TextBox", "Stages/Game", "Objects/Helper"], function (require, exports, O_7, main_15, Board_1, TextBox_3, Game_1, Helper_2) {
+define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/Board", "Objects/TextBox", "Stages/Game", "Objects/Helper"], function (require, exports, O_7, main_16, Board_1, TextBox_4, Game_1, Helper_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ShapeList = {};
@@ -2352,10 +2393,10 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
             this.toolsContainer = new PIXI.Container();
             this.toolsContainer.x = -this.gfx.width / 2;
             this.gfx.addChild(this.toolsContainer);
-            var btnSubmit = main_15._.sm.findStringId("btnsubmit");
+            var btnSubmit = main_16._.sm.findStringId("btnsubmit");
             btnSubmit.alwaysVisible = true;
             btnSubmit.gfx.visible = false;
-            var level = main_15._.game.level;
+            var level = main_16._.game.level;
             var levshapes = Game_1.LevelsShapes[level - 1];
             var shapes = [];
             for (var _i = 0, levshapes_1 = levshapes; _i < levshapes_1.length; _i++) {
@@ -2369,8 +2410,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                 });
             }
             this.setTools(shapes);
-            var btnNext = main_15._.sm.findStringId("next");
-            var btnPrev = main_15._.sm.findStringId("prev");
+            var btnNext = main_16._.sm.findStringId("next");
+            var btnPrev = main_16._.sm.findStringId("prev");
             if (shapes.length <= 3) {
                 btnNext.gfx.visible = false;
                 btnPrev.gfx.visible = false;
@@ -2380,17 +2421,17 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                 if (_this.page == 1) {
                     return;
                 }
-                _this.tween = main_15._.killTween(_this.tween);
+                _this.tween = main_16._.killTween(_this.tween);
                 _this.page++;
-                _this.tween = new main_15.TweenMax(_this, 0.3, { x: _this.x - main_15.SCR_WIDTH, ease: main_15.Quad.easeOut });
+                _this.tween = new main_16.TweenMax(_this, 0.3, { x: _this.x - main_16.SCR_WIDTH, ease: main_16.Quad.easeOut });
             };
             btnPrev.click = function () {
                 if (_this.page == 0) {
                     return;
                 }
-                _this.tween = main_15._.killTween(_this.tween);
+                _this.tween = main_16._.killTween(_this.tween);
                 _this.page--;
-                _this.tween = new main_15.TweenMax(_this, 0.3, { x: _this.x + main_15.SCR_WIDTH, ease: main_15.Quad.easeOut });
+                _this.tween = new main_16.TweenMax(_this, 0.3, { x: _this.x + main_16.SCR_WIDTH, ease: main_16.Quad.easeOut });
             };
         };
         ToolBar.prototype.alighShapes = function () {
@@ -2414,14 +2455,22 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
         };
         ToolBar.prototype.takeShape = function (shape) {
         };
+        ToolBar.ResetListeners = function (gfx) {
+            gfx.touchstart = null;
+            gfx.mousedown = null;
+            gfx.touchend = gfx.touchendoutside = null;
+            gfx.mouseup = gfx.mouseupoutside = null;
+            gfx.mousemove = null;
+            gfx.touchmove = null;
+        };
         ToolBar.prototype.updateList = function () {
             var _this = this;
-            var board = (main_15._.sm.findStringId("board"));
+            var board = (main_16._.sm.findStringId("board"));
             for (var _i = 0, _a = this.tools; _i < _a.length; _i++) {
                 var x = _a[_i];
                 (function (x) {
                     if (!x.Gfx) {
-                        x.Gfx = main_15._.cs(x.Shape.textureName, _this.toolsContainer);
+                        x.Gfx = main_16._.cs(x.Shape.textureName, _this.toolsContainer);
                         x.Gfx.rotation = x.Rotation;
                         var gfx_1 = x.Gfx;
                         var md = function (e) {
@@ -2432,7 +2481,7 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                                 x.Amount--;
                             }
                             O_7.O.rp(gfx_1);
-                            main_15._.sm.gui.addChild(gfx_1);
+                            main_16._.sm.gui.addChild(gfx_1);
                             _this.updateList();
                             board.align(board.draggin, e);
                         };
@@ -2445,10 +2494,14 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                             if (board.draggin && board.draggin.Gfx == gfx_1) {
                                 board.align(board.draggin, e);
                             }
+                            //  board.draggin.draggin = true;
                         };
                         gfx_1.mousemove = mm;
                         gfx_1.touchmove = mm;
                         var mu = function (e) {
+                            if (!board.draggin)
+                                return;
+                            //  board.draggin.draggin = false;
                             if (Math.sqrt((_this.downPos.x - e.data.global.x) * (_this.downPos.x - e.data.global.x) +
                                 (_this.downPos.y - e.data.global.y) * (_this.downPos.y - e.data.global.y)) < 30) {
                                 x.Rotation += Math.PI / 2;
@@ -2478,7 +2531,7 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                         x.Gfx.tint = 0x555555;
                     }
                     if (!x.Text)
-                        x.Text = TextBox_3.TextBox.createTextField({}, { fontscale: 1, text: "", align: "center" });
+                        x.Text = TextBox_4.TextBox.createTextField({}, { fontscale: 1, text: "", align: "center" });
                     x.Text.tint = 0x020202;
                     x.Text.text = x.Amount.toString();
                     _this.toolsContainer.addChild(x.Text);
@@ -2495,12 +2548,12 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                     allZeroes = false;
                 }
             }
-            var board = main_15._.sm.findByType(Board_1.Board)[0];
-            var btnSubmit = main_15._.sm.findStringId("btnsubmit");
+            var board = main_16._.sm.findByType(Board_1.Board)[0];
+            var btnSubmit = main_16._.sm.findStringId("btnsubmit");
             console.log("Zeroes ", allZeroes, " drag ", board.draggin);
-            if (allZeroes && !board.draggin && main_15._.game.score <= main_15._.game.limit) {
-                new main_15.TweenMax(btnSubmit.gfx.scale, 0.18, { x: btnSubmit.gfx.scale.x * 1.07, y: btnSubmit.gfx.scale.y * 1.07, yoyo: true, repeat: 3 });
-                main_15._.sm.removeList(main_15._.sm.findByType(Helper_2.Helper));
+            if (allZeroes && !board.draggin && main_16._.game.score <= main_16._.game.limit) {
+                new main_16.TweenMax(btnSubmit.gfx.scale, 0.18, { x: btnSubmit.gfx.scale.x * 1.07, y: btnSubmit.gfx.scale.y * 1.07, yoyo: true, repeat: 3 });
+                main_16._.sm.removeList(main_16._.sm.findByType(Helper_2.Helper));
                 btnSubmit.gfx.visible = true;
             }
             else {
@@ -2516,7 +2569,7 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
     }(O_7.O));
     exports.ToolBar = ToolBar;
 });
-define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "main", "Math"], function (require, exports, O_8, ToolBar_1, main_16, Math_3) {
+define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "main", "Math"], function (require, exports, O_8, ToolBar_1, main_17, Math_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Board = /** @class */ (function (_super) {
@@ -2531,9 +2584,17 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             _this.shapesOnBoard = [];
             _this.fields = [];
             _this.gfx = new PIXI.Container();
-            main_16._.sm.gui.addChild(_this.gfx);
+            main_17._.sm.gui.addChild(_this.gfx);
             return _this;
         }
+        Board.prototype.onDestroy = function () {
+            _super.prototype.onDestroy.call(this);
+            for (var _i = 0, _a = this.shapesOnBoard; _i < _a.length; _i++) {
+                var x = _a[_i];
+                ToolBar_1.ToolBar.ResetListeners(x.Gfx);
+                O_8.O.rp(x.Gfx);
+            }
+        };
         Board.prototype.getRotatedShape = function (shape, rotation) {
             var f = shape.fields;
             var c = Math.cos(rotation);
@@ -2587,7 +2648,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             this.gfx.anchor.y = 0;
             this.y -= this.gfx.height / 2;
             this.graphics.alpha = 0.5;
-            new main_16._.TweenMax(this.graphics, 1.4, { yoyo: true, repeat: -1, alpha: 0.3, ease: main_16.Linear.easeNone });
+            new main_17._.TweenMax(this.graphics, 1.4, { yoyo: true, repeat: -1, alpha: 0.3, ease: main_17.Linear.easeNone });
         };
         Board.prototype.tryToPut = function (draggin) {
             if (this.canPutHere(draggin.StartX, draggin.StartY, draggin.Shape, draggin.Rotation)) {
@@ -2596,11 +2657,11 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                 this.putShapeInField(draggin.StartX, draggin.StartY, draggin.Shape, draggin.Rotation);
                 draggin.InsideBoard = true;
                 this.updateSquare();
-                main_16._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
+                main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
                 return true;
             }
             else {
-                main_16._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
+                main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
                 return false;
             }
         };
@@ -2612,7 +2673,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             return true;
         };
         Board.prototype.align = function (draggin, e) {
-            var loc = this.gfx.toLocal(e.data.global, main_16._.sm.gui);
+            var loc = this.gfx.toLocal(e.data.global, main_17._.sm.gui);
             var cx = this.cellSize;
             loc.x = Math.floor((loc.x) / cx) * (cx);
             loc.y = Math.floor((loc.y) / cx) * (cx);
@@ -2655,7 +2716,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             return (val > 0) ? 1 : 2; // clock or counterclock wise
         };
         Board.prototype.updateSquare = function () {
-            main_16._.game.SetScore(0);
+            main_17._.game.SetScore(0);
             this.graphics.clear();
             var pointsMap = {};
             var points = [];
@@ -2717,7 +2778,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             for (var i = 1; i < result.length - 1; i++)
                 area += result[i].x * (result[i + 1].y - result[i - 1].y);
             area /= 2;
-            main_16._.game.SetScore((Math.round(area)));
+            main_17._.game.SetScore((Math.round(area)));
             console.log('Area ', area);
         };
         Board.prototype.dist2 = function (p, a) {
@@ -2741,10 +2802,10 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                     _this.pullShape(draggin);
                 }
                 _this.draggin = draggin;
-                draggin.Gfx.position.x = main_16._.cursorPos.x;
-                draggin.Gfx.position.y = main_16._.cursorPos.y;
+                draggin.Gfx.position.x = main_17._.cursorPos.x;
+                draggin.Gfx.position.y = main_17._.cursorPos.y;
                 _this.align(_this.draggin, e);
-                main_16._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
+                main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
             };
             draggin.Gfx.mousemove = draggin.Gfx.touchmove = function (e) {
                 if (_this.draggin)
@@ -2753,11 +2814,11 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside = function (e) {
                 if (_this.draggin)
                     if (_this.tryToPut(_this.draggin) == false) {
-                        var toolbar_1 = main_16._.sm.findByType(ToolBar_1.ToolBar)[0];
+                        var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
                         toolbar_1.returnShape(_this.draggin);
                     }
                 _this.draggin = null;
-                main_16._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
+                main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
             };
         };
         Board.prototype.canPutHere = function (dragstartx, dragstarty, Shape, rotation) {
@@ -2809,7 +2870,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
     }(O_8.O));
     exports.Board = Board;
 });
-define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects/BaseParticleSystem"], function (require, exports, Math_4, main_17, BaseParticleSystem_1) {
+define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects/BaseParticleSystem"], function (require, exports, Math_4, main_18, BaseParticleSystem_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var ParticleSystem = /** @class */ (function (_super) {
@@ -2825,7 +2886,7 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
             if (Math.random() > 0.5) {
                 s = "part2";
             }
-            var p = main_17._.cm(s);
+            var p = main_18._.cm(s);
             p.x = x - this.pos[0];
             p.y = y - this.pos[1];
             //TODO: SLOW PART
@@ -2850,15 +2911,15 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
         };
         ParticleSystem.prototype.init = function (props) {
             var _this = this;
-            this.pos[0] -= main_17._.screenCenterOffset[0];
-            this.pos[1] -= main_17._.screenCenterOffset[1];
+            this.pos[0] -= main_18._.screenCenterOffset[0];
+            this.pos[1] -= main_18._.screenCenterOffset[1];
             _super.prototype.init.call(this, props);
-            this.gfx.width = main_17.SCR_WIDTH;
-            this.gfx.height = main_17.SCR_HEIGHT;
+            this.gfx.width = main_18.SCR_WIDTH;
+            this.gfx.height = main_18.SCR_HEIGHT;
             this.wind = [0, 0];
             var addPart = function (fixy) {
                 if (fixy === void 0) { fixy = 0; }
-                _this.addParticle(_this.pos[0] + Math.random() * main_17.SCR_WIDTH, _this.pos[1] + main_17._.screenCenterOffset[1] + 50 + fixy);
+                _this.addParticle(_this.pos[0] + Math.random() * main_18.SCR_WIDTH, _this.pos[1] + main_18._.screenCenterOffset[1] + 50 + fixy);
             };
             this.setInterval(function () {
                 addPart();
@@ -2879,8 +2940,8 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
             for (var _i = 0, _a = this.particles; _i < _a.length; _i++) {
                 var x = _a[_i];
                 var part = x;
-                var worldx = this.pos[0] + x.x - main_17.SCR_WIDTH / 2;
-                var worldy = this.pos[1] + x.y - main_17.SCR_HEIGHT / 2;
+                var worldx = this.pos[0] + x.x - main_18.SCR_WIDTH / 2;
+                var worldy = this.pos[1] + x.y - main_18.SCR_HEIGHT / 2;
                 var sqd = ((p[0] - worldx) * (p[0] - worldx) +
                     (p[1] - worldy) * (p[1] - worldy));
                 if (sqd < sqdist) {
@@ -2901,8 +2962,8 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
             pobj.av = pobj.av * 0.8 + 0.2 * ((Math.random() + 1) / 100);
             pobj.angle += pobj.av;
             //TODO: slow place
-            var dx = main_17._.fMath.cos(pobj.angle);
-            var dy = main_17._.fMath.sin(pobj.angle);
+            var dx = main_18._.fMath.cos(pobj.angle);
+            var dy = main_18._.fMath.sin(pobj.angle);
             pobj.alpha = (dy + 1) * 0.5;
             if (dy > 0.2 && dy < 0.35) {
                 p.gotoAndStop(2);
@@ -2924,19 +2985,19 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
             pobj.y += (pobj.v[1] / pobj.mass) * delta;
             p.x = pobj.x; // - (_.sm.camera.offset[0]);
             p.y = pobj.y; // - (_.sm.camera.offset[1]);
-            pobj.y += (main_17.SCR_HEIGHT - p.y) / 10000;
+            pobj.y += (main_18.SCR_HEIGHT - p.y) / 10000;
             this.alwaysVisible = true;
         };
         ParticleSystem.prototype.process = function () {
-            this.wind[0] = main_17._.fMath.cos(main_17._.time / 4000) * 60.8;
-            this.wind[1] = main_17._.fMath.sin(main_17._.time / 4000) * 15.8;
+            this.wind[0] = main_18._.fMath.cos(main_18._.time / 4000) * 60.8;
+            this.wind[1] = main_18._.fMath.sin(main_18._.time / 4000) * 15.8;
             _super.prototype.process.call(this);
         };
         return ParticleSystem;
     }(BaseParticleSystem_1.BaseParticleSystem));
     exports.ParticleSystem = ParticleSystem;
 });
-define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_1, Camera_1, IO_3, O_9, ParticleSystem_1, TextBox_4, ToolBar_2) {
+define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_1, Camera_1, IO_3, O_9, ParticleSystem_1, TextBox_5, ToolBar_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectNames = {
@@ -2949,7 +3010,7 @@ define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BasePar
         IO: IO_3.IO,
         O: O_9.O,
         ParticleSystem: ParticleSystem_1.ParticleSystem,
-        TextBox: TextBox_4.TextBox,
+        TextBox: TextBox_5.TextBox,
         ToolBar: ToolBar_2.ToolBar,
     };
     exports.LevelNames = [
@@ -2960,7 +3021,7 @@ define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BasePar
         "levels/npgame.tsx",
     ];
 });
-define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"], function (require, exports, O_10, main_18, Math_5, ObjectsList_1) {
+define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"], function (require, exports, O_10, main_19, Math_5, ObjectsList_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -3011,11 +3072,11 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
         };
         LM.addGfxToWorld = function (stage, layerName) {
             if (layerName == 'gui')
-                return main_18._.sm.gui;
+                return main_19._.sm.gui;
             if (layerName == 'gui2')
-                return main_18._.sm.gui2;
+                return main_19._.sm.gui2;
             if (layerName == 'olgui')
-                return main_18._.sm.olgui;
+                return main_19._.sm.olgui;
             return stage.layers[layerName.toLowerCase()];
         };
         LM.val = function (obj, tag) {
@@ -3239,7 +3300,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             if (properties['movieclip'] == 'true') {
                 var noExtensionFrameName = frameName.replace(/\.[^/.]+$/, "");
                 var noDigitsFrameName = noExtensionFrameName.replace(/[0-9]/g, '');
-                gfx = main_18._.cm(noDigitsFrameName);
+                gfx = main_19._.cm(noDigitsFrameName);
                 if (properties['randomstart'] == 'true') {
                     gfx.gotoAndPlay(Math_5.m.rint(0, gfx.totalFrames - 1));
                 }
@@ -3251,7 +3312,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             }
             else {
                 //TODO: camera
-                gfx = main_18._.cs(textureName);
+                gfx = main_19._.cs(textureName);
             }
             gfx.anchor.x = .5;
             gfx.anchor.y = .5;
@@ -3341,7 +3402,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             }
             if (properties["singleton"] == 'true') {
                 //UniqueCheck
-                if (ObjectsList_1.ObjectNames[className] && main_18._.sm.findByType(ObjectsList_1.ObjectNames[className]).length > 0) {
+                if (ObjectsList_1.ObjectNames[className] && main_19._.sm.findByType(ObjectsList_1.ObjectNames[className]).length > 0) {
                     return null;
                 }
             }
@@ -3431,7 +3492,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             return objectsList;
         };
         LM.prototype.spawnTile = function (stage, textureName, posX, posY, layerName, type, layerStringID) {
-            var sprite = main_18._.cs(textureName);
+            var sprite = main_19._.cs(textureName);
             sprite.anchor.x = 0.;
             sprite.anchor.y = 0.;
             var o;
@@ -3515,7 +3576,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
                     x.gfx = null;
                 }
             }
-            main_18._.sm.removeList(list);
+            main_19._.sm.removeList(list);
             return retList;
         };
         LM.prototype.addTileset = function (result, data) {
@@ -3556,7 +3617,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             bf.blurY = properties.blury ? parseFloat(properties.blury) : 1;
             g.filters = [bf];
             var renderTexture = PIXI.RenderTexture.create(b.width + dx, b.height + dy);
-            main_18._.app.renderer.render(g, renderTexture);
+            main_19._.app.renderer.render(g, renderTexture);
             var container = new PIXI.Container();
             var spr = new PIXI.Sprite(renderTexture);
             // spr.anchor.x = 0.5;
@@ -3570,7 +3631,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
     }());
     exports.LM = LM;
 });
-define("ResourceManager", ["require", "exports", "main"], function (require, exports, main_19) {
+define("ResourceManager", ["require", "exports", "main"], function (require, exports, main_20) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     /**
@@ -3622,10 +3683,10 @@ define("ResourceManager", ["require", "exports", "main"], function (require, exp
                     var result = evt.name.substring(evt.name.lastIndexOf("/") + 1);
                     result = result.substring(0, result.length - 4);
                     if (ext == 'tsx') {
-                        main_19._.lm.addTileset(result, evt.data);
+                        main_20._.lm.addTileset(result, evt.data);
                     }
                     if (ext == 'tmx') {
-                        main_19._.lm.add(result, evt.data);
+                        main_20._.lm.add(result, evt.data);
                     }
                 }
                 onProcess(loader, evt);
@@ -3636,7 +3697,7 @@ define("ResourceManager", ["require", "exports", "main"], function (require, exp
     }());
     exports.ResourceManager = ResourceManager;
 });
-define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], function (require, exports, main_20, Camera_2, Math_6) {
+define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], function (require, exports, main_21, Camera_2, Math_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     //asdasdasd
@@ -3771,7 +3832,7 @@ define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], fu
             this.superstage.addChild(this.main);
             var w = window;
             var ui = w.PIXI.UI;
-            this.pixiUiStage = new ui.Stage(main_20.SCR_WIDTH, main_20.SCR_HEIGHT);
+            this.pixiUiStage = new ui.Stage(main_21.SCR_WIDTH, main_21.SCR_HEIGHT);
             this.superstage.addChild(this.pixiUiStage);
             this.superstage.addChild(this.effects);
             this.superstage.addChild(this.olgui);
@@ -3779,7 +3840,7 @@ define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], fu
             this.superstage.addChild(this.gui2);
             this.superstage.addChild(this.fonts);
             this.superstage.addChild(this.cursorlayer);
-            main_20._.app.stage.addChild(this.superstage);
+            main_21._.app.stage.addChild(this.superstage);
         };
         SM.prototype.createCamera = function () {
             this.camera = new Camera_2.Camera([0, 0]);
@@ -3818,7 +3879,7 @@ define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], fu
             this.stage = newStage;
             this.stage.layers = {};
             newStage.doProcess = true;
-            this.camera.reset(main_20.SCR_WIDTH / 2, main_20.SCR_HEIGHT / 2, false);
+            this.camera.reset(main_21.SCR_WIDTH / 2, main_21.SCR_HEIGHT / 2, false);
             newStage.onShow();
         };
         SM.prototype.openStage = function (newStage) {
@@ -3868,48 +3929,7 @@ define("Stages/SM", ["require", "exports", "main", "Objects/Camera", "Math"], fu
     }());
     exports.SM = SM;
 });
-define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/TextBox"], function (require, exports, Stage_2, main_21, TextBox_5) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Menu = /** @class */ (function (_super) {
-        __extends(Menu, _super);
-        function Menu() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        Menu.prototype.addLine = function (inx, data) {
-            var tbname = new TextBox_5.TextBox([180, 580 + inx * 60]);
-            tbname.init({ text: data.name + (data.lastname != "") ? (" " + data.lastname) : "" });
-            var tbscore = new TextBox_5.TextBox([570, 580 + inx * 60]);
-            tbscore.init({ align: "right", text: data.score.toString() });
-        };
-        Menu.prototype.getLeaderboard = function () {
-            var _this = this;
-            main_21.$.post("http://localhost:80/index.php", { func: "leaderboard" })
-                .done(function (data) {
-                var d = JSON.parse(data);
-                var inx = 0;
-                for (var _i = 0, d_1 = d; _i < d_1.length; _i++) {
-                    var x = d_1[_i];
-                    _this.addLine(inx, d[inx]);
-                    inx++;
-                } ///
-            });
-        };
-        Menu.prototype.onShow = function () {
-            main_21._.game.submitScore(22, "test", "test", "test");
-            _super.prototype.onShow.call(this);
-            main_21._.lm.load(this, 'menu', null);
-            main_21._.sm.findStringId("btnnew").click = function () {
-                // vkpost("lalalal");
-                main_21._.sm.openStage(main_21._.game);
-            };
-            this.getLeaderboard();
-        };
-        return Menu;
-    }(Stage_2.Stage));
-    exports.Menu = Menu;
-});
-define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceManager", "ObjectsList", "ClientSettings", "Stages/SM", "Stages/Menu", "Stages/Game"], function (require, exports, Sound_1, PauseTimer_1, lm_1, ResourceManager_1, ObjectsList_2, ClientSettings_2, SM_1, Menu_1, Game_2) {
+define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceManager", "ObjectsList", "ClientSettings", "Stages/SM", "Stages/Menu", "Stages/Game"], function (require, exports, Sound_1, PauseTimer_1, lm_1, ResourceManager_1, ObjectsList_2, ClientSettings_2, SM_1, Menu_2, Game_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.$ = window.$;
@@ -3948,7 +3968,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.totalFrames = 0;
             this.totalDelta = 0;
             this.fMath = new exports.FMath(null);
-            this.menu = new Menu_1.Menu();
+            this.menu = new Menu_2.Menu();
             this.game = new Game_2.Game();
             this.TweenMax = window.TweenMax;
             this.TimelineMax = window.TimelineMax;
