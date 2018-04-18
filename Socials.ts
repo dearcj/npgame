@@ -1,5 +1,4 @@
 import {$, _} from "./main";
-import "node_modules/twitter-login-client/src/twitter-client.js"
 declare let VK: any;
 declare let FB: any;
 declare let CryptoJS: any;
