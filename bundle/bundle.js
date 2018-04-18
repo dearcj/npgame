@@ -3558,7 +3558,7 @@ define("ResourceManager", ["require", "exports", "main"], function (require, exp
         };
         ResourceManager.prototype.loadAssets = function (assets, onProcess, onComplete) {
             var _this = this;
-            var loader = new PIXI.loaders.Loader();
+            var loader = new PIXI.loaders.Loader(window.PIXILoaderBaseUrl);
             loader.add(assets);
             loader.on('complete', function () {
                 onComplete();
