@@ -2083,6 +2083,10 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             var _this = this;
             _super.prototype.onShow.call(this);
             main_15._.lm.load(this, 'game', null);
+            var btnMenu = main_15._.sm.findStringId("menu");
+            btnMenu.click = function () {
+                main_15._.sm.openStage(main_15._.menu);
+            };
             var btnSubmit = main_15._.sm.findStringId("btnsubmit");
             btnSubmit.textField.tint = 0x111111;
             btnSubmit.prevTextTint = 0x111111;
@@ -2364,7 +2368,7 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                         var md = function (e) {
                             if (board.draggin && board.draggin.Gfx == gfx_1)
                                 return;
-                            _this.downPos = { x: e.data.global.x, y: e.data.global.y };
+                            _this.downPos = { x: e.data.global.x * main_16._.appScale, y: e.data.global.y * main_16._.appScale };
                             board.draggin = { Rotation: x.Rotation, InsideBoard: false, ShapeAmount: x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx_1 };
                             if (x.Gfx) {
                                 x.Gfx = null;
@@ -2392,8 +2396,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                             if (!board.draggin)
                                 return;
                             //  board.draggin.draggin = false;
-                            if (Math.sqrt((_this.downPos.x - e.data.global.x) * (_this.downPos.x - e.data.global.x) +
-                                (_this.downPos.y - e.data.global.y) * (_this.downPos.y - e.data.global.y)) < 30) {
+                            if (Math.sqrt((_this.downPos.x - e.data.global.x * main_16._.appScale) * (_this.downPos.x - e.data.global.x * main_16._.appScale) +
+                                (_this.downPos.y - e.data.global.y * main_16._.appScale) * (_this.downPos.y - e.data.global.y * main_16._.appScale)) < 30) {
                                 x.Rotation += Math.PI / 2;
                                 if (x.Gfx)
                                     x.Gfx.rotation = x.Rotation;
@@ -2563,7 +2567,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             return true;
         };
         Board.prototype.align = function (draggin, e) {
-            var loc = this.gfx.toLocal(e.data.global, main_17._.sm.gui);
+            var loc = this.gfx.toLocal(new PIXI.Point(e.data.global.x / main_17._.appScale, e.data.global.y / main_17._.appScale), main_17._.sm.gui);
             var cx = this.cellSize;
             loc.x = Math.floor((loc.x) / cx) * (cx);
             loc.y = Math.floor((loc.y) / cx) * (cx);
@@ -3969,11 +3973,11 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             });
             this.setScreenRes(exports.SCR_WIDTH, exports.SCR_HEIGHT);
             //TweenMax.lagSmoothing(0);
-            var ratio = window.PIXIRatio ? window.PIXIRatio : 1;
+            this.appScale = window.PIXIRatio ? window.PIXIRatio : 1;
             this.app = new PIXI.Application(exports.SCR_WIDTH, exports.SCR_HEIGHT, {
                 autoStart: true,
                 clearBeforeRender: true,
-                resolution: ratio, antialias: false,
+                resolution: 1, antialias: false,
                 preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
             });
             document.body.appendChild(this.app.view);
@@ -3985,7 +3989,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.sm = new SM_1.SM();
             this.sm.init();
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
-            //this.app.stage.scale.set(ratio, ratio);
+            this.app.stage.scale.set(this.appScale, this.appScale);
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();

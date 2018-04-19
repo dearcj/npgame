@@ -76,7 +76,10 @@ export class Game extends Stage {
     onShow() {
         super.onShow();
         _.lm.load(this, 'game', null);
-
+        let btnMenu = _.sm.findStringId("menu");
+        (<Button>btnMenu).click = () => {
+            _.sm.openStage(_.menu);
+        };
         let btnSubmit = _.sm.findStringId("btnsubmit");
         (<Button>btnSubmit).textField.tint = 0x111111;
         (<Button>btnSubmit).prevTextTint = 0x111111;

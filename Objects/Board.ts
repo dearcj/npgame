@@ -134,7 +134,7 @@ export class Board extends O {
     }
 
     align(draggin: ShapeOnBoard, e: any) {
-        let loc = this.gfx.toLocal(e.data.global, _.sm.gui);
+        let loc = this.gfx.toLocal(new PIXI.Point(e.data.global.x / _.appScale, e.data.global.y / _.appScale), _.sm.gui);
         let cx = this.cellSize;
         loc.x = Math.floor((loc.x) / cx) * (cx);
         loc.y = Math.floor((loc.y) / cx) * (cx);

@@ -241,7 +241,7 @@ export class ToolBar extends O {
                     let gfx = x.Gfx;
                     let md = (e) => {
                         if (board.draggin && board.draggin.Gfx == gfx) return;
-                        this.downPos = {x: e.data.global.x, y: e.data.global.y};
+                        this.downPos = {x: e.data.global.x*_.appScale, y: e.data.global.y*_.appScale};
                         board.draggin = {Rotation: x.Rotation, InsideBoard: false, ShapeAmount:x, Shape: x.Shape, StartX: -1, StartY: -1, Gfx: gfx};
                         if (x.Gfx) {
                             x.Gfx = null;
@@ -270,8 +270,8 @@ export class ToolBar extends O {
                     let mu = (e)=>{
                         if (!board.draggin) return;
                       //  board.draggin.draggin = false;
-                        if  (Math.sqrt((this.downPos.x - e.data.global.x)*(this.downPos.x - e.data.global.x) +
-                            (this.downPos.y - e.data.global.y)*(this.downPos.y - e.data.global.y)) < 30) {
+                        if  (Math.sqrt((this.downPos.x - e.data.global.x*_.appScale)*(this.downPos.x - e.data.global.x*_.appScale) +
+                            (this.downPos.y - e.data.global.y*_.appScale)*(this.downPos.y - e.data.global.y*_.appScale)) < 30) {
                             x.Rotation += Math.PI/ 2;
                             if (x.Gfx)
                                 x.Gfx.rotation = x.Rotation;
