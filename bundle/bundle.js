@@ -3969,10 +3969,11 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             });
             this.setScreenRes(exports.SCR_WIDTH, exports.SCR_HEIGHT);
             //TweenMax.lagSmoothing(0);
+            var ratio = window.PIXIRatio ? window.PIXIRatio : 1;
             this.app = new PIXI.Application(exports.SCR_WIDTH, exports.SCR_HEIGHT, {
                 autoStart: true,
                 clearBeforeRender: true,
-                resolution: this.appScale, antialias: false,
+                resolution: ratio, antialias: false,
                 preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
             });
             document.body.appendChild(this.app.view);
@@ -3983,9 +3984,8 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.app.stage = new PIXI.Container();
             this.sm = new SM_1.SM();
             this.sm.init();
-            var ratio = window.PIXIRatio ? window.PIXIRatio : 1;
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
-            this.app.stage.scale.set(ratio, ratio);
+            //this.app.stage.scale.set(ratio, ratio);
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();

@@ -229,11 +229,12 @@ export class Main {
 
         this.setScreenRes(SCR_WIDTH, SCR_HEIGHT);
         //TweenMax.lagSmoothing(0);
+        let ratio = window.PIXIRatio ? window.PIXIRatio : 1;
 
         this.app = new PIXI.Application(SCR_WIDTH, SCR_HEIGHT, {
             autoStart: true,
             clearBeforeRender: true,
-            resolution: this.appScale, antialias: false,
+            resolution: ratio, antialias: false,
             preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
         });
         document.body.appendChild(this.app.view);
@@ -248,9 +249,8 @@ export class Main {
         this.app.stage = new PIXI.Container();
         this.sm = new SM();
         this.sm.init();
-        let ratio = window.PIXIRatio ? window.PIXIRatio : 1;
         //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
-        this.app.stage.scale.set(ratio, ratio);
+        //this.app.stage.scale.set(ratio, ratio);
 
         this.lm = new LM();
         this.sm.createCamera();
