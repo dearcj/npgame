@@ -248,6 +248,9 @@ export class Main {
         this.app.stage = new PIXI.Container();
         this.sm = new SM();
         this.sm.init();
+        let ratio = window.PIXIRatio ? window.PIXIRatio : 1;
+        //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
+        this.app.stage.scale.set(ratio, ratio);
 
         this.lm = new LM();
         this.sm.createCamera();
@@ -268,6 +271,8 @@ export class Main {
         document.addEventListener('mousedown', (e) => {
             if (this.globalMouseDown) this.globalMouseDown(e), false
         });
+
+       // this.app.stage.pivot.set(this.app.renderer.width, this.app.renderer.height);
 
         /*interaction.cursorStyles["init"] = "url(/game/cursors/cursor.png), default";
         interaction.cursorStyles["default"] = "url(/game/cursors/cursor.png), default";

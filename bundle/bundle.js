@@ -3983,6 +3983,9 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.app.stage = new PIXI.Container();
             this.sm = new SM_1.SM();
             this.sm.init();
+            var ratio = window.PIXIRatio ? window.PIXIRatio : 1;
+            //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
+            this.app.stage.scale.set(ratio, ratio);
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();
@@ -4001,6 +4004,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
                 if (_this.globalMouseDown)
                     _this.globalMouseDown(e), false;
             });
+            // this.app.stage.pivot.set(this.app.renderer.width, this.app.renderer.height);
             /*interaction.cursorStyles["init"] = "url(/game/cursors/cursor.png), default";
             interaction.cursorStyles["default"] = "url(/game/cursors/cursor.png), default";
             interaction.cursorStyles["pointer"] = "url(/game/cursors/hand.png), pointer";
