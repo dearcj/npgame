@@ -120,6 +120,7 @@ export class ToolBar extends O {
     private downPos: { x: number; y: number };
     private page: number;
     private startDrag: number;
+    private tweenComplete: any;
     check(): any {
         throw new Error("Method not implemented.");
     }
@@ -331,8 +332,11 @@ export class ToolBar extends O {
         let btnSubmit = _.sm.findStringId("btnsubmit");
         console.log("Zeroes ", allZeroes, " drag ", board.draggin);
         if (allZeroes && !board.draggin && _.game.score <= _.game.limit) {
+            if (this.tweenComplete) {
+                this.tweenComplete = _.killTween(this.tweenComplete)
+            }
 
-            new TweenMax(btnSubmit.gfx.scale, 0.18, {x: btnSubmit.gfx.scale.x*1.07, y: btnSubmit.gfx.scale.y*1.07, yoyo: true, repeat: 3});
+            this.tweenComplete = new TweenMax(btnSubmit.gfx.scale, 0.18, {x: btnSubmit.gfx.scale.x*1.07, y: btnSubmit.gfx.scale.y*1.07, yoyo: true, repeat: 3});
             _.sm.removeList(_.sm.findByType(Helper));
 
             btnSubmit.gfx.visible = true;

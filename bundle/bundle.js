@@ -2469,7 +2469,10 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
             var btnSubmit = main_16._.sm.findStringId("btnsubmit");
             console.log("Zeroes ", allZeroes, " drag ", board.draggin);
             if (allZeroes && !board.draggin && main_16._.game.score <= main_16._.game.limit) {
-                new main_16.TweenMax(btnSubmit.gfx.scale, 0.18, { x: btnSubmit.gfx.scale.x * 1.07, y: btnSubmit.gfx.scale.y * 1.07, yoyo: true, repeat: 3 });
+                if (this.tweenComplete) {
+                    this.tweenComplete = main_16._.killTween(this.tweenComplete);
+                }
+                this.tweenComplete = new main_16.TweenMax(btnSubmit.gfx.scale, 0.18, { x: btnSubmit.gfx.scale.x * 1.07, y: btnSubmit.gfx.scale.y * 1.07, yoyo: true, repeat: 3 });
                 main_16._.sm.removeList(main_16._.sm.findByType(Helper_2.Helper));
                 btnSubmit.gfx.visible = true;
             }
@@ -2712,6 +2715,9 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
         Board.prototype.SetDragHandlers = function (draggin) {
             var _this = this;
             draggin.Gfx.mousedown = draggin.Gfx.touchstart = function (e) {
+                if (_this.draggin) {
+                    _this.draggin.Gfx.mouseup(e);
+                }
                 _this.startDrag = (new Date()).getTime();
                 if (draggin.InsideBoard) {
                     _this.pullShape(draggin);
@@ -2743,7 +2749,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                         }
                         _this.UpdateGFXPos(draggin.Gfx, _this.draggin.StartX, _this.draggin.StartY);
                     }
-                    _this.UpdateGFXPos(draggin.Gfx, _this.draggin.StartX, _this.draggin.StartY);
+                    //this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
                     if (_this.tryToPut(_this.draggin) == false) {
                         var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
                         toolbar_1.returnShape(_this.draggin);

@@ -267,6 +267,10 @@ export class Board extends O {
 
     private SetDragHandlers(draggin: ShapeOnBoard) {
         draggin.Gfx.mousedown = draggin.Gfx.touchstart = (e) => {
+            if (this.draggin) {
+                this.draggin.Gfx.mouseup(e);
+            }
+
             this.startDrag = (new Date()).getTime();
             if (draggin.InsideBoard) {
                 this.pullShape(draggin);
@@ -306,7 +310,7 @@ export class Board extends O {
                     this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
 
                 }
-                this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
+                //this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
 
                 if (this.tryToPut(this.draggin) == false) {
                         let toolbar = _.sm.findByType(ToolBar)[0];
