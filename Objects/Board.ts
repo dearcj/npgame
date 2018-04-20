@@ -30,6 +30,7 @@ export class Board extends O {
     private shapesOnBoard: ShapeOnBoard[] = [];
     private fields: number[][] = [];
     public graphics: PIXI.Graphics;
+    private startDrag: number;
 
     onDestroy() {
         super.onDestroy();
@@ -269,6 +270,7 @@ export class Board extends O {
 
     private SetDragHandlers(draggin: ShapeOnBoard) {
         draggin.Gfx.mousedown = draggin.Gfx.touchstart = (e) => {
+            this.startDrag = (new Date()).getTime();
             if (draggin.InsideBoard) {
                 this.pullShape(draggin);
             }
@@ -288,12 +290,38 @@ export class Board extends O {
         };
 
         draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside =  (e)=>{
-            if (this.draggin)
-            if (this.tryToPut(this.draggin) == false) {
-                let toolbar = _.sm.findByType(ToolBar)[0];
-                toolbar.returnShape(this.draggin);
+            if (this.draggin) {
+
+                if ((new Date()).getTime() - this.startDrag < 300) {
+
+                    let oldRot = this.draggin.Rotation;
+                    this.draggin.Rotation += Math.PI/ 2;
+                    if (this.draggin.Gfx)
+                        this.draggin.Gfx.rotation = this.draggin.Rotation;
+
+                    if (this.findRotPlaceFor(this.draggin)) {
+                        this.align(this.draggin, e);
+                        this.draggin.Rotation += Math.PI/ 2;
+                        if (this.draggin.Gfx)
+                            this.draggin.Gfx.rotation = this.draggin.Rotation;
+
+                    } else {
+                        this.draggin.Rotation = oldRot;
+                        if (this.draggin.Gfx)
+                            this.draggin.Gfx.rotation = this.draggin.Rotation;
+                    }
+
+
+                } else
+
+
+                if (this.tryToPut(this.draggin) == false) {
+                    let toolbar = _.sm.findByType(ToolBar)[0];
+                    toolbar.returnShape(this.draggin);
+                }
+                this.draggin = null;
             }
-            this.draggin = null;
+
             _.sm.findByType(ToolBar)[0].checkSubmit();
         };
     }
@@ -343,5 +371,9 @@ export class Board extends O {
         return f; else {
             return null;
         }
+    }
+
+    private findRotPlaceFor(draggin: ShapeOnBoard) {
+        return false;
     }
 }

@@ -2392,7 +2392,6 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                                 x.Amount--;
                             }
                             O_8.O.rp(gfx_1);
-                            _this.startDrag = (new Date()).getTime();
                             main_16._.sm.gui.addChild(gfx_1);
                             _this.updateList();
                             board.align(board.draggin, e);
@@ -2710,6 +2709,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
         Board.prototype.SetDragHandlers = function (draggin) {
             var _this = this;
             draggin.Gfx.mousedown = draggin.Gfx.touchstart = function (e) {
+                _this.startDrag = (new Date()).getTime();
                 if (draggin.InsideBoard) {
                     _this.pullShape(draggin);
                 }
@@ -2724,12 +2724,30 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                     _this.align(_this.draggin, e);
             };
             draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside = function (e) {
-                if (_this.draggin)
-                    if (_this.tryToPut(_this.draggin) == false) {
+                if (_this.draggin) {
+                    if ((new Date()).getTime() - _this.startDrag < 300) {
+                        var oldRot = _this.draggin.Rotation;
+                        _this.draggin.Rotation += Math.PI / 2;
+                        if (_this.draggin.Gfx)
+                            _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                        if (_this.findRotPlaceFor(_this.draggin)) {
+                            _this.align(_this.draggin, e);
+                            _this.draggin.Rotation += Math.PI / 2;
+                            if (_this.draggin.Gfx)
+                                _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                        }
+                        else {
+                            _this.draggin.Rotation = oldRot;
+                            if (_this.draggin.Gfx)
+                                _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                        }
+                    }
+                    else if (_this.tryToPut(_this.draggin) == false) {
                         var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
                         toolbar_1.returnShape(_this.draggin);
                     }
-                _this.draggin = null;
+                    _this.draggin = null;
+                }
                 main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
             };
         };
@@ -2777,6 +2795,9 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             else {
                 return null;
             }
+        };
+        Board.prototype.findRotPlaceFor = function (draggin) {
+            return false;
         };
         return Board;
     }(O_9.O));

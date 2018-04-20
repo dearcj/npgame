@@ -119,6 +119,7 @@ export class ToolBar extends O {
     itemWidth: number;
     private downPos: { x: number; y: number };
     private page: number;
+    private startDrag: number;
     check(): any {
         throw new Error("Method not implemented.");
     }
@@ -248,7 +249,6 @@ export class ToolBar extends O {
                             x.Amount--;
                         }
                         O.rp(gfx);
-                        this.startDrag = (new Date()).getTime();
                         _.sm.gui.addChild(gfx);
                         this.updateList();
                         board.align(board.draggin, e);
@@ -270,6 +270,8 @@ export class ToolBar extends O {
                     gfx.touchmove = mm;
                     let mu = (e)=>{
                         if (!board.draggin) return;
+
+
                       //  board.draggin.draggin = false;
                         if  (Math.sqrt((this.downPos.x - e.data.global.x*_.appScale)*(this.downPos.x - e.data.global.x*_.appScale) +
                             (this.downPos.y - e.data.global.y*_.appScale)*(this.downPos.y - e.data.global.y*_.appScale)) < 30) {
