@@ -240,6 +240,8 @@ export class Main {
         document.body.appendChild(this.app.view);
 
 
+        this.app.renderer.plugins.interaction.autoPreventDefault = false;
+
         this.camera = new PIXI.Container();
         this.camera.x = 0;
         this.camera.y = 0;
