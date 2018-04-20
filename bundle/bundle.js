@@ -2070,7 +2070,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O"
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.score = 0;
             _this.secs = 0;
-            _this.level = 3;
+            _this.level = 1;
             _this.limit = 0;
             return _this;
         }
