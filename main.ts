@@ -235,7 +235,7 @@ export class Main {
             autoStart: true,
             clearBeforeRender: true,
             resolution: 1, antialias: false,
-            preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
+            preserveDrawingBuffer: false, forceFXAA: false, backgroundColor: 0xffffff,
         });
         document.body.appendChild(this.app.view);
 
