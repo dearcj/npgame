@@ -77,12 +77,23 @@ export class Game extends Stage {
         super.onShow();
         _.lm.load(this, 'game', null);
         let btnMenu = _.sm.findStringId("menu");
-        (<Button>btnMenu).click = () => {
+       (<Button>btnMenu).click = () => {
             _.sm.openStage(_.menu);
         };
         let btnSubmit = _.sm.findStringId("btnsubmit");
         (<Button>btnSubmit).textField.tint = 0x111111;
         (<Button>btnSubmit).prevTextTint = 0x111111;
+
+        let btnReset = _.sm.findStringId("btnreset");
+        (<Button>btnReset).click = () => {
+            _.sm.openStage(_.game);
+        };
+
+        O.rp(btnMenu.gfx);
+        _.sm.gui2.addChild(btnMenu.gfx);
+        O.rp(btnReset.gfx);
+        _.sm.gui2.addChild(btnReset.gfx);
+
         (<Button>btnSubmit).click = () => {
             if (this.level == 3) {
                 _.game.ShowResModal();
@@ -92,11 +103,7 @@ export class Game extends Stage {
             }
         };
 
-        let btnReset = _.sm.findStringId("btnreset", this.resModal);
-        (<Button>btnReset).click = () => {
-            _.sm.openStage(_.game);
-        };
-        let lev = _.sm.findStringId("lev", this.resModal);
+        let lev = _.sm.findStringId("lev");
         (<TextBox>lev).text = this.level.toString();
         this.secs = 0;
         this.updateTime();
@@ -119,6 +126,7 @@ export class Game extends Stage {
             let helper = new Helper([SCR_WIDTH / 2, 180]);
             helper.init({})
         }
+       // _.game.ShowResModal();
     }
 
     CloseResModal() {
@@ -133,7 +141,6 @@ export class Game extends Stage {
 
     ShowResModal() {
         this.timeInterval = _.killTween(this.timeInterval);
-
         this.resModal = _.lm.load(_.game, 'modal', null);
         let btnClose = _.sm.findStringId("btncancel", this.resModal);
         let win = _.sm.findStringId("scorewin", this.resModal);
@@ -154,7 +161,19 @@ export class Game extends Stage {
 
         fb.click = () => {
             fbpost("");
-        }
+        };
+
+        let g = _.cs("btnton1.png");
+        g.scale.x = 1.5;
+        g.scale.y = 1.5;
+        let btnTON = new Button(_.sm.findStringId("btntonpos").pos, g);
+        btnTON.init({text:"N+1", fontscale: 0.7,});
+        (<Button>btnTON).click = () => {
+            window.open((<any>window).LINK_TO_SOCIAL);
+        };
+
+        O.rp(btnTON);
+        _.sm.gui2.addChild(btnTON.gfx);
     }
 
     SetScore(x: number) {

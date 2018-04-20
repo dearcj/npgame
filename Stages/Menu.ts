@@ -6,6 +6,7 @@ import {vkpost} from "../Socials";
 
 export let API_PHP_FILE = (<any>window).API_PHP_FILE;
 export class Menu extends Stage {
+
     addLine(inx: number, data: any) {
         if (_.sm.stage != this) return;
         let tbname = new TextBox([180, 580 + inx * 60]);
@@ -21,7 +22,7 @@ export class Menu extends Stage {
                 let d = JSON.parse(data);
                 let inx = 0;
                 for (let x of d) {
-                    if (inx > 15) break;
+                    if (inx > 10) break;
                     this.addLine(inx, d[inx]);
                     inx++;
                 }///

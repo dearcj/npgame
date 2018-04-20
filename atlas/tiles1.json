@@ -40,6 +40,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":239,"h":108},
 	"sourceSize": {"w":239,"h":108}
 },
+"btnton1.png":
+{
+	"frame": {"x":1385,"y":2251,"w":141,"h":61},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":141,"h":61},
+	"sourceSize": {"w":141,"h":61}
+},
 "fb.png":
 {
 	"frame": {"x":1753,"y":2334,"w":176,"h":176},
@@ -231,6 +239,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":4096},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c25daf57d8e12c0984ba3870a2932f32$"
+	"smartupdate": "$TexturePacker:SmartUpdate:f6c062358070e75f3b1e53ed96f96872$"
 }
 }

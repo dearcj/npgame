@@ -91,4 +91,7 @@
  <tile id="39">
   <image width="77" height="77" source="../res/r2/black.png"/>
  </tile>
+    <tile id="81">
+        <image width="141" height="61" source="../res/r2/btnton1.png"/>
+    </tile>
 </tileset>

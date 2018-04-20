@@ -170,6 +170,7 @@
             <filename>../res/r2/onlyboard.png</filename>
             <filename>C:/projects/npgame/res/r2/black.png</filename>
             <filename>../res/r2/black.png</filename>
+            <filename>../res/r2/btnton1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

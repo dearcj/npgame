@@ -248,6 +248,7 @@ export class ToolBar extends O {
                             x.Amount--;
                         }
                         O.rp(gfx);
+                        this.startDrag = (new Date()).getTime();
                         _.sm.gui.addChild(gfx);
                         this.updateList();
                         board.align(board.draggin, e);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="54">
+<map version="1.0" tiledversion="1.1.3161" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="32" tileheight="32" infinite="0" nextobjectid="63">
  <tileset firstgid="1" source="npgame.tsx"/>
  <objectgroup name="bg111"/>
  <objectgroup name="bgsize" locked="1">
@@ -46,5 +46,6 @@
   </object>
   <object id="49" name="btnvk" type="Button" gid="36" x="265" y="673.622" width="75" height="75"/>
   <object id="53" name="btnfb" type="Button" gid="16" x="381.73" y="672" width="71.3514" height="71.3514"/>
+  <object id="62" name="btntonpos" x="324" y="788" width="68" height="41"/>
  </objectgroup>
 </map>

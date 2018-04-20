@@ -1993,7 +1993,7 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
                 var inx = 0;
                 for (var _i = 0, d_1 = d; _i < d_1.length; _i++) {
                     var x = d_1[_i];
-                    if (inx > 15)
+                    if (inx > 10)
                         break;
                     _this.addLine(inx, d[inx]);
                     inx++;
@@ -2017,7 +2017,7 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
     }(Stage_1.Stage));
     exports.Menu = Menu;
 });
-define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/Helper", "Socials", "Stages/Menu"], function (require, exports, Stage_2, main_15, Helper_1, Socials_1, Menu_1) {
+define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O", "Objects/Button", "Objects/Helper", "Socials", "Stages/Menu"], function (require, exports, Stage_2, main_15, O_7, Button_1, Helper_1, Socials_1, Menu_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LevelsShapes = [
@@ -2092,6 +2092,14 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             var btnSubmit = main_15._.sm.findStringId("btnsubmit");
             btnSubmit.textField.tint = 0x111111;
             btnSubmit.prevTextTint = 0x111111;
+            var btnReset = main_15._.sm.findStringId("btnreset");
+            btnReset.click = function () {
+                main_15._.sm.openStage(main_15._.game);
+            };
+            O_7.O.rp(btnMenu.gfx);
+            main_15._.sm.gui2.addChild(btnMenu.gfx);
+            O_7.O.rp(btnReset.gfx);
+            main_15._.sm.gui2.addChild(btnReset.gfx);
             btnSubmit.click = function () {
                 if (_this.level == 3) {
                     main_15._.game.ShowResModal();
@@ -2101,11 +2109,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
                     main_15._.sm.openStage(main_15._.game);
                 }
             };
-            var btnReset = main_15._.sm.findStringId("btnreset", this.resModal);
-            btnReset.click = function () {
-                main_15._.sm.openStage(main_15._.game);
-            };
-            var lev = main_15._.sm.findStringId("lev", this.resModal);
+            var lev = main_15._.sm.findStringId("lev");
             lev.text = this.level.toString();
             this.secs = 0;
             this.updateTime();
@@ -2124,6 +2128,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
                 var helper = new Helper_1.Helper([main_15.SCR_WIDTH / 2, 180]);
                 helper.init({});
             }
+            // _.game.ShowResModal();
         };
         Game.prototype.CloseResModal = function () {
             main_15._.sm.removeList(this.resModal);
@@ -2154,6 +2159,16 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
             fb.click = function () {
                 Socials_1.fbpost("");
             };
+            var g = main_15._.cs("btnton1.png");
+            g.scale.x = 1.5;
+            g.scale.y = 1.5;
+            var btnTON = new Button_1.Button(main_15._.sm.findStringId("btntonpos").pos, g);
+            btnTON.init({ text: "N+1", fontscale: 0.7, });
+            btnTON.click = function () {
+                window.open(window.LINK_TO_SOCIAL);
+            };
+            O_7.O.rp(btnTON);
+            main_15._.sm.gui2.addChild(btnTON.gfx);
         };
         Game.prototype.SetScore = function (x) {
             this.score = x;
@@ -2179,7 +2194,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/He
     }(Stage_2.Stage));
     exports.Game = Game;
 });
-define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/Board", "Objects/TextBox", "Stages/Game", "Objects/Helper"], function (require, exports, O_7, main_16, Board_1, TextBox_4, Game_1, Helper_2) {
+define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/Board", "Objects/TextBox", "Stages/Game", "Objects/Helper"], function (require, exports, O_8, main_16, Board_1, TextBox_4, Game_1, Helper_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ShapeList = {};
@@ -2278,7 +2293,7 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
             var prev = this.gfx;
             var p = this.gfx.parent;
             var inx = p.getChildIndex(prev);
-            O_7.O.rp(prev);
+            O_8.O.rp(prev);
             this.gfx = new PIXI.Container();
             this.gfx.addChild(prev);
             p.addChildAt(this.gfx, inx);
@@ -2376,7 +2391,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                                 x.Gfx = null;
                                 x.Amount--;
                             }
-                            O_7.O.rp(gfx_1);
+                            O_8.O.rp(gfx_1);
+                            _this.startDrag = (new Date()).getTime();
                             main_16._.sm.gui.addChild(gfx_1);
                             _this.updateList();
                             board.align(board.draggin, e);
@@ -2457,15 +2473,15 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
             }
         };
         ToolBar.prototype.returnShape = function (draggin) {
-            O_7.O.rp(draggin.Gfx);
+            O_8.O.rp(draggin.Gfx);
             draggin.ShapeAmount.Amount++;
             this.updateList();
         };
         return ToolBar;
-    }(O_7.O));
+    }(O_8.O));
     exports.ToolBar = ToolBar;
 });
-define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "main", "Math"], function (require, exports, O_8, ToolBar_1, main_17, Math_3) {
+define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "main", "Math"], function (require, exports, O_9, ToolBar_1, main_17, Math_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Board = /** @class */ (function (_super) {
@@ -2488,7 +2504,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             for (var _i = 0, _a = this.shapesOnBoard; _i < _a.length; _i++) {
                 var x = _a[_i];
                 ToolBar_1.ToolBar.ResetListeners(x.Gfx);
-                O_8.O.rp(x.Gfx);
+                O_9.O.rp(x.Gfx);
             }
         };
         Board.prototype.getRotatedShape = function (shape, rotation) {
@@ -2763,7 +2779,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             }
         };
         return Board;
-    }(O_8.O));
+    }(O_9.O));
     exports.Board = Board;
 });
 define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects/BaseParticleSystem"], function (require, exports, Math_4, main_18, BaseParticleSystem_1) {
@@ -2893,7 +2909,7 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
     }(BaseParticleSystem_1.BaseParticleSystem));
     exports.ParticleSystem = ParticleSystem;
 });
-define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_1, Camera_1, IO_3, O_9, ParticleSystem_1, TextBox_5, ToolBar_2) {
+define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_2, Camera_1, IO_3, O_10, ParticleSystem_1, TextBox_5, ToolBar_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectNames = {
@@ -2901,10 +2917,10 @@ define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BasePar
         BaseParticleSystem: BaseParticleSystem_2.BaseParticleSystem,
         BlackScreen: BlackScreen_1.BlackScreen,
         Board: Board_2.Board,
-        Button: Button_1.Button,
+        Button: Button_2.Button,
         Camera: Camera_1.Camera,
         IO: IO_3.IO,
-        O: O_9.O,
+        O: O_10.O,
         ParticleSystem: ParticleSystem_1.ParticleSystem,
         TextBox: TextBox_5.TextBox,
         ToolBar: ToolBar_2.ToolBar,
@@ -2917,7 +2933,7 @@ define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BasePar
         "levels/npgame.tsx",
     ];
 });
-define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"], function (require, exports, O_10, main_19, Math_5, ObjectsList_1) {
+define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"], function (require, exports, O_11, main_19, Math_5, ObjectsList_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
@@ -2989,7 +3005,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             for (var _i = 0, a_1 = a; _i < a_1.length; _i++) {
                 var x = a_1[_i];
                 if (x.gfx) {
-                    O_10.O.rp(x.gfx);
+                    O_11.O.rp(x.gfx);
                     c.addChild(x.gfx);
                 }
             }
@@ -3311,7 +3327,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
                 obj = new (ObjectsList_1.ObjectNames[className])(startPos);
             }
             else {
-                obj = new O_10.O(startPos);
+                obj = new O_11.O(startPos);
             }
             obj.stringID = name;
             if (polygon) {
@@ -3396,7 +3412,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
                 o = new ObjectsList_1.ObjectNames[type.toLowerCase()]([posX, posY]);
             }
             else {
-                o = new O_10.O([posX, posY]);
+                o = new O_11.O([posX, posY]);
             }
             o.stringID = layerStringID;
             o.gfx = sprite;
@@ -3464,7 +3480,7 @@ define("lm", ["require", "exports", "Objects/O", "main", "Math", "ObjectsList"],
             for (var _i = 0, list_3 = list; _i < list_3.length; _i++) {
                 var x = list_3[_i];
                 if (x.gfx) {
-                    O_10.O.rp(x.gfx);
+                    O_11.O.rp(x.gfx);
                     x.gfx.x = x.x;
                     x.gfx.y = x.y;
                     container.addChild(x.gfx);
@@ -3992,7 +4008,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.sm.init();
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
             this.app.stage.scale.set(this.appScale, this.appScale);
-            this.app.renderer.plugins.interaction.autoPreventDefault = false;
+            this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, { autoPreventDefault: false });
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();
@@ -4003,7 +4019,6 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
         ;
         Main.prototype.loadComplete = function () {
             var _this = this;
-            this.app.renderer.plugins.interaction.autoPreventDefault = false;
             this.isInitialLoading = false;
             this.loadTime = (new Date()).getTime() - window.startTime.getTime();
             this.clearPreloader();
