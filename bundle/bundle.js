@@ -2725,26 +2725,32 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             };
             draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside = function (e) {
                 if (_this.draggin) {
-                    if ((new Date()).getTime() - _this.startDrag < 300) {
-                        var oldRot = _this.draggin.Rotation;
-                        _this.draggin.Rotation += Math.PI / 2;
-                        if (_this.draggin.Gfx)
-                            _this.draggin.Gfx.rotation = _this.draggin.Rotation;
-                        if (_this.findRotPlaceFor(_this.draggin)) {
-                            _this.align(_this.draggin, e);
-                            _this.draggin.Rotation += Math.PI / 2;
-                            if (_this.draggin.Gfx)
-                                _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                    /*  if ((new Date()).getTime() - this.startDrag < 300) {
+      
+                          let oldRot = this.draggin.Rotation;
+                          this.draggin.Rotation += Math.PI/ 2;
+                          if (this.draggin.Gfx)
+                              this.draggin.Gfx.rotation = this.draggin.Rotation;
+      
+                          if (this.findRotPlaceFor(this.draggin)) {
+                          } else {
+                              this.draggin.Rotation = oldRot;
+                              if (this.draggin.Gfx)
+                                  this.draggin.Gfx.rotation = this.draggin.Rotation;
+      
+                              if (this.tryToPut(this.draggin) == false) {
+                                  let toolbar = _.sm.findByType(ToolBar)[0];
+                                  toolbar.returnShape(this.draggin);
+                              }
+                          }
+                          this.align(this.draggin, e);
+      
+      
+                      } else */ {
+                        if (_this.tryToPut(_this.draggin) == false) {
+                            var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
+                            toolbar_1.returnShape(_this.draggin);
                         }
-                        else {
-                            _this.draggin.Rotation = oldRot;
-                            if (_this.draggin.Gfx)
-                                _this.draggin.Gfx.rotation = _this.draggin.Rotation;
-                        }
-                    }
-                    else if (_this.tryToPut(_this.draggin) == false) {
-                        var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
-                        toolbar_1.returnShape(_this.draggin);
                     }
                     _this.draggin = null;
                 }
@@ -2797,7 +2803,40 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             }
         };
         Board.prototype.findRotPlaceFor = function (draggin) {
-            return false;
+            var _this = this;
+            var defaultx = draggin.StartX;
+            var defaulty = draggin.StartY;
+            var depth = 0;
+            var ResX = null;
+            var ResY = null;
+            var recursiveCheck = function (defX, defY, depth) {
+                if (ResX)
+                    return false;
+                draggin.StartX = defX;
+                draggin.StartY = defY;
+                if (_this.tryToPut(draggin)) {
+                    ResX = defX;
+                    ResY = defY;
+                    console.log("true!!!!!");
+                    return true;
+                }
+                if (depth > 10) {
+                    return false;
+                }
+                return recursiveCheck(defX - 1, defY, depth + 1) ||
+                    recursiveCheck(defX + 1, defY, depth + 1) ||
+                    recursiveCheck(defX, defY - 1, depth + 1) ||
+                    recursiveCheck(defX, defY + 1, depth + 1);
+            };
+            recursiveCheck(draggin.StartX, draggin.StartY, 0);
+            if (ResX) {
+                return true;
+            }
+            else {
+                draggin.StartX = defaultx;
+                draggin.StartY = defaulty;
+                return false;
+            }
         };
         return Board;
     }(O_9.O));

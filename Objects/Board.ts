@@ -292,7 +292,7 @@ export class Board extends O {
         draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside =  (e)=>{
             if (this.draggin) {
 
-                if ((new Date()).getTime() - this.startDrag < 300) {
+              /*  if ((new Date()).getTime() - this.startDrag < 300) {
 
                     let oldRot = this.draggin.Rotation;
                     this.draggin.Rotation += Math.PI/ 2;
@@ -300,24 +300,24 @@ export class Board extends O {
                         this.draggin.Gfx.rotation = this.draggin.Rotation;
 
                     if (this.findRotPlaceFor(this.draggin)) {
-                        this.align(this.draggin, e);
-                        this.draggin.Rotation += Math.PI/ 2;
-                        if (this.draggin.Gfx)
-                            this.draggin.Gfx.rotation = this.draggin.Rotation;
-
                     } else {
                         this.draggin.Rotation = oldRot;
                         if (this.draggin.Gfx)
                             this.draggin.Gfx.rotation = this.draggin.Rotation;
+
+                        if (this.tryToPut(this.draggin) == false) {
+                            let toolbar = _.sm.findByType(ToolBar)[0];
+                            toolbar.returnShape(this.draggin);
+                        }
                     }
+                    this.align(this.draggin, e);
 
 
-                } else
-
-
-                if (this.tryToPut(this.draggin) == false) {
-                    let toolbar = _.sm.findByType(ToolBar)[0];
-                    toolbar.returnShape(this.draggin);
+                } else */{
+                    if (this.tryToPut(this.draggin) == false) {
+                        let toolbar = _.sm.findByType(ToolBar)[0];
+                        toolbar.returnShape(this.draggin);
+                    }
                 }
                 this.draggin = null;
             }
@@ -373,7 +373,42 @@ export class Board extends O {
         }
     }
 
-    private findRotPlaceFor(draggin: ShapeOnBoard) {
-        return false;
+    private findRotPlaceFor(draggin: ShapeOnBoard): boolean {
+        let defaultx = draggin.StartX;
+        let defaulty = draggin.StartY;
+        let depth = 0;
+        let ResX = null;
+        let ResY = null;
+
+        let recursiveCheck = (defX, defY, depth): boolean => {
+            if (ResX) return false;
+
+            draggin.StartX = defX;
+            draggin.StartY = defY;
+            if (this.tryToPut(draggin)) {
+                ResX = defX;
+                ResY = defY;
+                console.log("true!!!!!");
+                return true;
+            }
+
+            if (depth > 10) {
+                return false;
+            }
+
+            return recursiveCheck(defX - 1, defY, depth + 1) ||
+                recursiveCheck(defX + 1, defY, depth + 1) ||
+                recursiveCheck(defX, defY - 1, depth + 1) ||
+                recursiveCheck(defX, defY + 1, depth + 1)
+        };
+        recursiveCheck(draggin.StartX, draggin.StartY, 0);
+        if (ResX) {
+            return true;
+        } else {
+            draggin.StartX = defaultx;
+            draggin.StartY = defaulty;
+            return false;
+        }
+
     }
 }
