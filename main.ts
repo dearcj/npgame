@@ -253,7 +253,7 @@ export class Main {
 
         //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
         this.app.stage.scale.set(this.appScale, this.appScale);
-        this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, {autoPreventDefault: false});
+//        this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, {autoPreventDefault: false});
 
         this.lm = new LM();
         this.sm.createCamera();

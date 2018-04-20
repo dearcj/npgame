@@ -146,10 +146,7 @@ export class Board extends O {
         console.log(dragstartx, "    ", dragstarty);
         draggin.StartX = dragstartx;
         draggin.StartY = dragstarty;
-        let loc2 = this.gfx.toGlobal(loc);
-        let b = draggin.Gfx.getBounds();
-        draggin.Gfx.position.x = this.gfx.x + cx*this.gfx.scale.x * (dragstartx) + Math.abs(x[0]);
-        draggin.Gfx.position.y = this.gfx.y + cx*this.gfx.scale.y * (dragstarty) + Math.abs(x[1]);
+        this.UpdateGFXPos(draggin.Gfx, dragstartx, dragstarty);
     }
 
     private putShapeInField(dragstartx: number, dragstarty: number, Shape: Shape, rot: number) {
@@ -292,33 +289,31 @@ export class Board extends O {
         draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside =  (e)=>{
             if (this.draggin) {
 
-              /*  if ((new Date()).getTime() - this.startDrag < 300) {
+                if ((new Date()).getTime() - this.startDrag < 320) {
 
                     let oldRot = this.draggin.Rotation;
                     this.draggin.Rotation += Math.PI/ 2;
                     if (this.draggin.Gfx)
                         this.draggin.Gfx.rotation = this.draggin.Rotation;
+                    this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
 
                     if (this.findRotPlaceFor(this.draggin)) {
                     } else {
                         this.draggin.Rotation = oldRot;
                         if (this.draggin.Gfx)
                             this.draggin.Gfx.rotation = this.draggin.Rotation;
-
-                        if (this.tryToPut(this.draggin) == false) {
-                            let toolbar = _.sm.findByType(ToolBar)[0];
-                            toolbar.returnShape(this.draggin);
-                        }
                     }
-                    this.align(this.draggin, e);
+                    this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
 
+                }
+                this.UpdateGFXPos(draggin.Gfx, this.draggin.StartX, this.draggin.StartY);
 
-                } else */{
-                    if (this.tryToPut(this.draggin) == false) {
+                if (this.tryToPut(this.draggin) == false) {
                         let toolbar = _.sm.findByType(ToolBar)[0];
                         toolbar.returnShape(this.draggin);
                     }
-                }
+                //this.align(this.draggin, e);
+
                 this.draggin = null;
             }
 
@@ -377,38 +372,49 @@ export class Board extends O {
         let defaultx = draggin.StartX;
         let defaulty = draggin.StartY;
         let depth = 0;
-        let ResX = null;
-        let ResY = null;
+        let BestDepth = 20;
+        let BestResX = null;
+        let BestResY = null;
 
         let recursiveCheck = (defX, defY, depth): boolean => {
-            if (ResX) return false;
-
-            draggin.StartX = defX;
-            draggin.StartY = defY;
-            if (this.tryToPut(draggin)) {
-                ResX = defX;
-                ResY = defY;
+            if (depth > 8 || defX < 0 || defY < 0 || defX > this.fields.length || defY > this.fields[0].length) return;
+            if (this.canPutHere(defX, defY, draggin.Shape, draggin.Rotation)) {
+                if (BestDepth > depth) {
+                    BestDepth = depth;
+                    BestResX = defX;
+                    BestResY = defY;
+                }
                 console.log("true!!!!!");
                 return true;
             }
 
-            if (depth > 10) {
-                return false;
-            }
+            if (depth + 1 > BestDepth) return;
 
-            return recursiveCheck(defX - 1, defY, depth + 1) ||
-                recursiveCheck(defX + 1, defY, depth + 1) ||
-                recursiveCheck(defX, defY - 1, depth + 1) ||
-                recursiveCheck(defX, defY + 1, depth + 1)
+            recursiveCheck(defX - 1, defY, depth + 1);
+            recursiveCheck(defX + 1, defY, depth + 1);
+            recursiveCheck(defX, defY - 1, depth + 1);
+            recursiveCheck(defX, defY + 1, depth + 1);
         };
         recursiveCheck(draggin.StartX, draggin.StartY, 0);
-        if (ResX) {
+        if (BestResX != null) {
+            draggin.StartX = BestResX;
+            draggin.StartY = BestResY;
             return true;
         } else {
             draggin.StartX = defaultx;
             draggin.StartY = defaulty;
             return false;
         }
+
+    }
+
+    private UpdateGFXPos(Gfx: PIXI.Sprite, dragstartx: number, dragstarty: number) {
+        let v: Vec2 = [Gfx.width / 2, Gfx.height / 2];
+        let x = m.rv2(v, Gfx.rotation);
+        let cx = this.cellSize;
+        let b = Gfx.getBounds();
+        Gfx.position.x = this.gfx.x + cx*this.gfx.scale.x * (dragstartx) + Math.abs(x[0]);
+        Gfx.position.y = this.gfx.y + cx*this.gfx.scale.y * (dragstarty) + Math.abs(x[1]);
 
     }
 }

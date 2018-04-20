@@ -58,8 +58,8 @@
     <property name="text" value="000"/>
    </properties>
   </object>
-  <object id="40" name="menu" type="Button" gid="19" x="645" y="84.838" width="76" height="76.38"/>
-  <object id="41" name="btnreset" type="Button" gid="22" x="327" y="82" width="70" height="70"/>
+  <object id="40" name="menu" type="Button" gid="19" x="789" y="-110" width="76" height="76.38"/>
+  <object id="41" name="btnreset" type="Button" gid="22" x="646" y="83" width="70" height="70"/>
   <object id="43" type="ToolBar" gid="2" x="-30" y="1279" width="788" height="248"/>
   <object id="46" name="board" type="Board" gid="38" x="28" y="676.167" width="664" height="553.333"/>
   <object id="48" name="next" type="Button" gid="18" x="636" y="1226" width="80" height="106.168"/>

@@ -252,6 +252,8 @@ export class ToolBar extends O {
                         _.sm.gui.addChild(gfx);
                         this.updateList();
                         board.align(board.draggin, e);
+                        if (e.stopPropegation)
+                            e.stopPropegation()
                     };
 
                     gfx.touchstart = md;
@@ -265,6 +267,8 @@ export class ToolBar extends O {
                         }
                       //  board.draggin.draggin = true;
 
+                        if (e.stopPropegation)
+                            e.stopPropegation()
                     };
                     gfx.mousemove = mm;
                     gfx.touchmove = mm;
@@ -285,6 +289,8 @@ export class ToolBar extends O {
                         }
                         board.draggin = null;
                         this.checkSubmit();
+                        if (e.stopPropegation)
+                        e.stopPropegation()
                     };
                     gfx.touchend = gfx.touchendoutside = mu;
                     gfx.mouseup = gfx.mouseupoutside = mu;

@@ -60,7 +60,7 @@ export class Game extends Stage {
     private resModal: Array<O>;
     public score: number = 0;
     secs: number = 0;
-    level: number = 1;
+    level: number = 3;
     private timeInterval: any;
     public limit: number = 0;
 

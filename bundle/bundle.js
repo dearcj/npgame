@@ -2070,7 +2070,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O"
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.score = 0;
             _this.secs = 0;
-            _this.level = 1;
+            _this.level = 3;
             _this.limit = 0;
             return _this;
         }
@@ -2395,6 +2395,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                             main_16._.sm.gui.addChild(gfx_1);
                             _this.updateList();
                             board.align(board.draggin, e);
+                            if (e.stopPropegation)
+                                e.stopPropegation();
                         };
                         gfx_1.touchstart = md;
                         gfx_1.mousedown = md;
@@ -2406,6 +2408,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                                 board.align(board.draggin, e);
                             }
                             //  board.draggin.draggin = true;
+                            if (e.stopPropegation)
+                                e.stopPropegation();
                         };
                         gfx_1.mousemove = mm;
                         gfx_1.touchmove = mm;
@@ -2426,6 +2430,8 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
                             }
                             board.draggin = null;
                             _this.checkSubmit();
+                            if (e.stopPropegation)
+                                e.stopPropegation();
                         };
                         gfx_1.touchend = gfx_1.touchendoutside = mu;
                         gfx_1.mouseup = gfx_1.mouseupoutside = mu;
@@ -2595,10 +2601,7 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             console.log(dragstartx, "    ", dragstarty);
             draggin.StartX = dragstartx;
             draggin.StartY = dragstarty;
-            var loc2 = this.gfx.toGlobal(loc);
-            var b = draggin.Gfx.getBounds();
-            draggin.Gfx.position.x = this.gfx.x + cx * this.gfx.scale.x * (dragstartx) + Math.abs(x[0]);
-            draggin.Gfx.position.y = this.gfx.y + cx * this.gfx.scale.y * (dragstarty) + Math.abs(x[1]);
+            this.UpdateGFXPos(draggin.Gfx, dragstartx, dragstarty);
         };
         Board.prototype.putShapeInField = function (dragstartx, dragstarty, Shape, rot) {
             var s = this.getRotatedShape(Shape, rot);
@@ -2725,33 +2728,27 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             };
             draggin.Gfx.mouseup = draggin.Gfx.mouseupoutside = draggin.Gfx.touchend = draggin.Gfx.touchendoutside = function (e) {
                 if (_this.draggin) {
-                    /*  if ((new Date()).getTime() - this.startDrag < 300) {
-      
-                          let oldRot = this.draggin.Rotation;
-                          this.draggin.Rotation += Math.PI/ 2;
-                          if (this.draggin.Gfx)
-                              this.draggin.Gfx.rotation = this.draggin.Rotation;
-      
-                          if (this.findRotPlaceFor(this.draggin)) {
-                          } else {
-                              this.draggin.Rotation = oldRot;
-                              if (this.draggin.Gfx)
-                                  this.draggin.Gfx.rotation = this.draggin.Rotation;
-      
-                              if (this.tryToPut(this.draggin) == false) {
-                                  let toolbar = _.sm.findByType(ToolBar)[0];
-                                  toolbar.returnShape(this.draggin);
-                              }
-                          }
-                          this.align(this.draggin, e);
-      
-      
-                      } else */ {
-                        if (_this.tryToPut(_this.draggin) == false) {
-                            var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
-                            toolbar_1.returnShape(_this.draggin);
+                    if ((new Date()).getTime() - _this.startDrag < 320) {
+                        var oldRot = _this.draggin.Rotation;
+                        _this.draggin.Rotation += Math.PI / 2;
+                        if (_this.draggin.Gfx)
+                            _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                        _this.UpdateGFXPos(draggin.Gfx, _this.draggin.StartX, _this.draggin.StartY);
+                        if (_this.findRotPlaceFor(_this.draggin)) {
                         }
+                        else {
+                            _this.draggin.Rotation = oldRot;
+                            if (_this.draggin.Gfx)
+                                _this.draggin.Gfx.rotation = _this.draggin.Rotation;
+                        }
+                        _this.UpdateGFXPos(draggin.Gfx, _this.draggin.StartX, _this.draggin.StartY);
                     }
+                    _this.UpdateGFXPos(draggin.Gfx, _this.draggin.StartX, _this.draggin.StartY);
+                    if (_this.tryToPut(_this.draggin) == false) {
+                        var toolbar_1 = main_17._.sm.findByType(ToolBar_1.ToolBar)[0];
+                        toolbar_1.returnShape(_this.draggin);
+                    }
+                    //this.align(this.draggin, e);
                     _this.draggin = null;
                 }
                 main_17._.sm.findByType(ToolBar_1.ToolBar)[0].checkSubmit();
@@ -2807,29 +2804,32 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             var defaultx = draggin.StartX;
             var defaulty = draggin.StartY;
             var depth = 0;
-            var ResX = null;
-            var ResY = null;
+            var BestDepth = 20;
+            var BestResX = null;
+            var BestResY = null;
             var recursiveCheck = function (defX, defY, depth) {
-                if (ResX)
-                    return false;
-                draggin.StartX = defX;
-                draggin.StartY = defY;
-                if (_this.tryToPut(draggin)) {
-                    ResX = defX;
-                    ResY = defY;
+                if (depth > 8 || defX < 0 || defY < 0 || defX > _this.fields.length || defY > _this.fields[0].length)
+                    return;
+                if (_this.canPutHere(defX, defY, draggin.Shape, draggin.Rotation)) {
+                    if (BestDepth > depth) {
+                        BestDepth = depth;
+                        BestResX = defX;
+                        BestResY = defY;
+                    }
                     console.log("true!!!!!");
                     return true;
                 }
-                if (depth > 10) {
-                    return false;
-                }
-                return recursiveCheck(defX - 1, defY, depth + 1) ||
-                    recursiveCheck(defX + 1, defY, depth + 1) ||
-                    recursiveCheck(defX, defY - 1, depth + 1) ||
-                    recursiveCheck(defX, defY + 1, depth + 1);
+                if (depth + 1 > BestDepth)
+                    return;
+                recursiveCheck(defX - 1, defY, depth + 1);
+                recursiveCheck(defX + 1, defY, depth + 1);
+                recursiveCheck(defX, defY - 1, depth + 1);
+                recursiveCheck(defX, defY + 1, depth + 1);
             };
             recursiveCheck(draggin.StartX, draggin.StartY, 0);
-            if (ResX) {
+            if (BestResX != null) {
+                draggin.StartX = BestResX;
+                draggin.StartY = BestResY;
                 return true;
             }
             else {
@@ -2837,6 +2837,14 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                 draggin.StartY = defaulty;
                 return false;
             }
+        };
+        Board.prototype.UpdateGFXPos = function (Gfx, dragstartx, dragstarty) {
+            var v = [Gfx.width / 2, Gfx.height / 2];
+            var x = Math_3.m.rv2(v, Gfx.rotation);
+            var cx = this.cellSize;
+            var b = Gfx.getBounds();
+            Gfx.position.x = this.gfx.x + cx * this.gfx.scale.x * (dragstartx) + Math.abs(x[0]);
+            Gfx.position.y = this.gfx.y + cx * this.gfx.scale.y * (dragstarty) + Math.abs(x[1]);
         };
         return Board;
     }(O_9.O));
@@ -4068,7 +4076,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.sm.init();
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
             this.app.stage.scale.set(this.appScale, this.appScale);
-            this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, { autoPreventDefault: false });
+            //        this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, {autoPreventDefault: false});
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();
