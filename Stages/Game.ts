@@ -1,5 +1,5 @@
 import {Stage} from "./Stage";
-import {$, _, SCR_WIDTH, SCR_WIDTH_HALF} from "../main";
+import {$, _, SCR_HEIGHT, SCR_WIDTH, SCR_WIDTH_HALF} from "../main";
 import {O} from "../Objects/O";
 import {Button} from "../Objects/Button";
 import {TextBox} from "../Objects/TextBox";
@@ -57,6 +57,7 @@ export let LevelsShapes: Array<Array<LevelShape>> = [
     ]];
 
 export class Game extends Stage {
+    whiteSpace: PIXI.Graphics;
     private resModal: Array<O>;
     public score: number = 0;
     secs: number = 0;
@@ -126,7 +127,18 @@ export class Game extends Stage {
             let helper = new Helper([SCR_WIDTH / 2, 180]);
             helper.init({})
         }
-       // _.game.ShowResModal();
+
+        this.whiteSpace= new PIXI.Graphics();
+        this.whiteSpace.x = 0;
+        this.whiteSpace.clear();
+        this.whiteSpace.beginFill(0xffffff,1);
+        this.whiteSpace.drawRect(SCR_WIDTH, 0, 300, SCR_HEIGHT);
+        this.whiteSpace.endFill();
+        _.sm.gui.addChild(this.whiteSpace);
+
+
+
+        // _.game.ShowResModal();
     }
 
     CloseResModal() {
@@ -134,6 +146,7 @@ export class Game extends Stage {
     }
 
     onHide(s: Stage) {
+        this.whiteSpace = O.rp(this.whiteSpace);
         this.timeInterval = _.killTween(this.timeInterval);
         super.onHide(s);
 

@@ -2128,12 +2128,20 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O"
                 var helper = new Helper_1.Helper([main_15.SCR_WIDTH / 2, 180]);
                 helper.init({});
             }
+            this.whiteSpace = new PIXI.Graphics();
+            this.whiteSpace.x = 0;
+            this.whiteSpace.clear();
+            this.whiteSpace.beginFill(0xffffff, 1);
+            this.whiteSpace.drawRect(main_15.SCR_WIDTH, 0, 300, main_15.SCR_HEIGHT);
+            this.whiteSpace.endFill();
+            main_15._.sm.gui.addChild(this.whiteSpace);
             // _.game.ShowResModal();
         };
         Game.prototype.CloseResModal = function () {
             main_15._.sm.removeList(this.resModal);
         };
         Game.prototype.onHide = function (s) {
+            this.whiteSpace = O_7.O.rp(this.whiteSpace);
             this.timeInterval = main_15._.killTween(this.timeInterval);
             _super.prototype.onHide.call(this, s);
         };
@@ -4080,6 +4088,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.app.stage = new PIXI.Container();
             this.sm = new SM_1.SM();
             this.sm.init();
+            this.app.stage.scrollRect = new PIXI.Rectangle(10, 10, 100, 100);
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
             this.app.stage.scale.set(this.appScale, this.appScale);
             //        this.app.renderer.plugins.interaction = new PIXI.interaction.InteractionManager(this.app.renderer, {autoPreventDefault: false});
