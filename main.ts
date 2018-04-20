@@ -234,7 +234,7 @@ export class Main {
         this.app = new PIXI.Application(SCR_WIDTH, SCR_HEIGHT, {
             autoStart: true,
             clearBeforeRender: true,
-            resolution: 1, antialias: false,
+            resolution: 1.25, antialias: false,
             preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
         });
         document.body.appendChild(this.app.view);
