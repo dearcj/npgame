@@ -1993,6 +1993,8 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
                 var inx = 0;
                 for (var _i = 0, d_1 = d; _i < d_1.length; _i++) {
                     var x = d_1[_i];
+                    if (inx > 15)
+                        break;
                     _this.addLine(inx, d[inx]);
                     inx++;
                 } ///

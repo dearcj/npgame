@@ -21,6 +21,7 @@ export class Menu extends Stage {
                 let d = JSON.parse(data);
                 let inx = 0;
                 for (let x of d) {
+                    if (inx > 15) break;
                     this.addLine(inx, d[inx]);
                     inx++;
                 }///
