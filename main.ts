@@ -231,10 +231,11 @@ export class Main {
         //TweenMax.lagSmoothing(0);
         this.appScale = window.PIXIRatio ? window.PIXIRatio : 1;
 
+        console.log( window.devicePixelRatio);
         this.app = new PIXI.Application(SCR_WIDTH, SCR_HEIGHT, {
             autoStart: true,
             clearBeforeRender: true,
-            resolution: 1.2, antialias: false,
+            resolution:  window.devicePixelRatio, antialias: false,
             preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
         });
         document.body.appendChild(this.app.view);
