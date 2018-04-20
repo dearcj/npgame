@@ -4077,7 +4077,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.app = new PIXI.Application(exports.SCR_WIDTH, exports.SCR_HEIGHT, {
                 autoStart: true,
                 clearBeforeRender: true,
-                resolution: 1.25, antialias: false,
+                resolution: 1.2, antialias: false,
                 preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
             });
             document.body.appendChild(this.app.view);
