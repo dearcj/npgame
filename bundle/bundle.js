@@ -3981,7 +3981,6 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
                 preserveDrawingBuffer: false, forceFXAA: true, backgroundColor: 0xffffff,
             });
             document.body.appendChild(this.app.view);
-            this.app.renderer.plugins.interaction.autoPreventDefault = false;
             this.camera = new PIXI.Container();
             this.camera.x = 0;
             this.camera.y = 0;
@@ -3991,6 +3990,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
             this.sm.init();
             //this.app.stage.position.set(this.app.renderer.width/2, this.app.renderer.height/2);
             this.app.stage.scale.set(this.appScale, this.appScale);
+            this.app.renderer.plugins.interaction.autoPreventDefault = false;
             this.lm = new lm_1.LM();
             this.sm.createCamera();
             this.lastLoop = (new Date()).getTime();
@@ -4001,6 +4001,7 @@ define("main", ["require", "exports", "Sound", "PauseTimer", "lm", "ResourceMana
         ;
         Main.prototype.loadComplete = function () {
             var _this = this;
+            this.app.renderer.plugins.interaction.autoPreventDefault = false;
             this.isInitialLoading = false;
             this.loadTime = (new Date()).getTime() - window.startTime.getTime();
             this.clearPreloader();
