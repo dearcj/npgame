@@ -31,6 +31,14 @@ export class Helper extends O {
             this.text1.y = -50;
         }
 
+
+        if (_.game.level == 3) {
+            this.text1 = TextBox.createTextField({}, {text: `А теперь разложи фигуры как можно компактнее
+и поделись результатом с друзьями` , fontscale: 0.5, align: 'center'});
+            this.text1.x = 0;
+            this.text1.y = -50;
+        }
+
         this.text1.tint = 0x444444;
         this.gfx.addChild(this.text1);
         this.gfx.interactive = true;

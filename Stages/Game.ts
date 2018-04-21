@@ -123,7 +123,7 @@ export class Game extends Stage {
         }
 
 
-        if (this.level == 1 || this.level == 2) {
+        if (this.level == 1 || this.level == 2 || this.level == 3) {
             let helper = new Helper([SCR_WIDTH / 2, 180]);
             helper.init({})
         }
@@ -185,7 +185,6 @@ export class Game extends Stage {
             window.open((<any>window).LINK_TO_SOCIAL);
         };
 
-        O.rp(btnTON);
         _.sm.gui2.addChild(btnTON.gfx);
     }
 

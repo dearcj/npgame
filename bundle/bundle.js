@@ -1817,6 +1817,11 @@ define("Objects/Helper", ["require", "exports", "Objects/O", "main", "Objects/Te
                 this.text1.x = 0;
                 this.text1.y = -50;
             }
+            if (main_12._.game.level == 3) {
+                this.text1 = TextBox_2.TextBox.createTextField({}, { text: "\u0410 \u0442\u0435\u043F\u0435\u0440\u044C \u0440\u0430\u0437\u043B\u043E\u0436\u0438 \u0444\u0438\u0433\u0443\u0440\u044B \u043A\u0430\u043A \u043C\u043E\u0436\u043D\u043E \u043A\u043E\u043C\u043F\u0430\u043A\u0442\u043D\u0435\u0435\n\u0438 \u043F\u043E\u0434\u0435\u043B\u0438\u0441\u044C \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u043E\u043C \u0441 \u0434\u0440\u0443\u0437\u044C\u044F\u043C\u0438", fontscale: 0.5, align: 'center' });
+                this.text1.x = 0;
+                this.text1.y = -50;
+            }
             this.text1.tint = 0x444444;
             this.gfx.addChild(this.text1);
             this.gfx.interactive = true;
@@ -1968,7 +1973,7 @@ define("Socials", ["require", "exports", "main"], function (require, exports, ma
     }
     exports.fbpost = fbpost;
 });
-define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/TextBox"], function (require, exports, Stage_1, main_14, TextBox_3) {
+define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Button", "Objects/TextBox"], function (require, exports, Stage_1, main_14, Button_1, TextBox_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.API_PHP_FILE = window.API_PHP_FILE;
@@ -2011,13 +2016,22 @@ define("Stages/Menu", ["require", "exports", "Stages/Stage", "main", "Objects/Te
                 main_14._.game.score = 999;
                 main_14._.game.ShowResModal();
             }
+            var g = main_14._.cs("btnton1.png");
+            g.scale.x = 1.5;
+            g.scale.y = 1.5;
+            var btnTON = new Button_1.Button(main_14._.sm.findStringId("btntonpos").pos, g);
+            btnTON.init({ text: "N+1", fontscale: 0.7, });
+            btnTON.click = function () {
+                window.open(window.LINK_TO_SOCIAL);
+            };
+            main_14._.sm.gui2.addChild(btnTON.gfx);
             this.getLeaderboard();
         };
         return Menu;
     }(Stage_1.Stage));
     exports.Menu = Menu;
 });
-define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O", "Objects/Button", "Objects/Helper", "Socials", "Stages/Menu"], function (require, exports, Stage_2, main_15, O_7, Button_1, Helper_1, Socials_1, Menu_1) {
+define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O", "Objects/Button", "Objects/Helper", "Socials", "Stages/Menu"], function (require, exports, Stage_2, main_15, O_7, Button_2, Helper_1, Socials_1, Menu_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.LevelsShapes = [
@@ -2124,7 +2138,7 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O"
             if (this.level == 2) {
                 this.limit = 18;
             }
-            if (this.level == 1 || this.level == 2) {
+            if (this.level == 1 || this.level == 2 || this.level == 3) {
                 var helper = new Helper_1.Helper([main_15.SCR_WIDTH / 2, 180]);
                 helper.init({});
             }
@@ -2170,12 +2184,11 @@ define("Stages/Game", ["require", "exports", "Stages/Stage", "main", "Objects/O"
             var g = main_15._.cs("btnton1.png");
             g.scale.x = 1.5;
             g.scale.y = 1.5;
-            var btnTON = new Button_1.Button(main_15._.sm.findStringId("btntonpos").pos, g);
+            var btnTON = new Button_2.Button(main_15._.sm.findStringId("btntonpos").pos, g);
             btnTON.init({ text: "N+1", fontscale: 0.7, });
             btnTON.click = function () {
                 window.open(window.LINK_TO_SOCIAL);
             };
-            O_7.O.rp(btnTON);
             main_15._.sm.gui2.addChild(btnTON.gfx);
         };
         Game.prototype.SetScore = function (x) {
@@ -2991,7 +3004,7 @@ define("Objects/ParticleSystem", ["require", "exports", "Math", "main", "Objects
     }(BaseParticleSystem_1.BaseParticleSystem));
     exports.ParticleSystem = ParticleSystem;
 });
-define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_2, Camera_1, IO_3, O_10, ParticleSystem_1, TextBox_5, ToolBar_2) {
+define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BaseParticleSystem", "Objects/BlackScreen", "Objects/Board", "Objects/Button", "Objects/Camera", "Objects/IO", "Objects/O", "Objects/ParticleSystem", "Objects/TextBox", "Objects/ToolBar"], function (require, exports, Aligner_1, BaseParticleSystem_2, BlackScreen_1, Board_2, Button_3, Camera_1, IO_3, O_10, ParticleSystem_1, TextBox_5, ToolBar_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ObjectNames = {
@@ -2999,7 +3012,7 @@ define("ObjectsList", ["require", "exports", "Objects/Aligner", "Objects/BasePar
         BaseParticleSystem: BaseParticleSystem_2.BaseParticleSystem,
         BlackScreen: BlackScreen_1.BlackScreen,
         Board: Board_2.Board,
-        Button: Button_2.Button,
+        Button: Button_3.Button,
         Camera: Camera_1.Camera,
         IO: IO_3.IO,
         O: O_10.O,

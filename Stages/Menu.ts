@@ -41,6 +41,17 @@ export class Menu extends Stage {
             _.game.ShowResModal();
         }
 
+        let g = _.cs("btnton1.png");
+        g.scale.x = 1.5;
+        g.scale.y = 1.5;
+        let btnTON = new Button(_.sm.findStringId("btntonpos").pos, g);
+        btnTON.init({text:"N+1", fontscale: 0.7,});
+        (<Button>btnTON).click = () => {
+            window.open((<any>window).LINK_TO_SOCIAL);
+        };
+
+        _.sm.gui2.addChild(btnTON.gfx);
+
         this.getLeaderboard();
     }
 }
