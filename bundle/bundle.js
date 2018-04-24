@@ -2488,7 +2488,6 @@ define("Objects/ToolBar", ["require", "exports", "Objects/O", "main", "Objects/B
             }
             var board = main_16._.sm.findByType(Board_1.Board)[0];
             var btnSubmit = main_16._.sm.findStringId("btnsubmit");
-            console.log("Zeroes ", allZeroes, " drag ", board.draggin);
             if (allZeroes && !board.draggin && main_16._.game.score <= main_16._.game.limit) {
                 if (this.tweenComplete) {
                     this.tweenComplete = main_16._.killTween(this.tweenComplete);
@@ -2607,7 +2606,6 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             }
         };
         Board.prototype.pullShape = function (s) {
-            console.log("Pulling shape, ", s.StartX, '  ', s.StartY);
             s.InsideBoard = false;
             this.pullShapeFromField(s.StartX, s.StartY, s.Shape, s.Rotation);
             this.updateSquare();
@@ -2622,14 +2620,12 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
             var x = Math_3.m.rv2(v, draggin.Gfx.rotation);
             var dragstartx = Math.round((loc.x - Math.abs(x[0])) / cx);
             var dragstarty = Math.round((loc.y - Math.abs(x[1])) / cx);
-            console.log(dragstartx, "    ", dragstarty);
             draggin.StartX = dragstartx;
             draggin.StartY = dragstarty;
             this.UpdateGFXPos(draggin.Gfx, dragstartx, dragstarty);
         };
         Board.prototype.putShapeInField = function (dragstartx, dragstarty, Shape, rot) {
             var s = this.getRotatedShape(Shape, rot);
-            console.log("Put shape, ", dragstartx, '  ', dragstarty);
             for (var i = 0; i < s.fields.length; i++) {
                 for (var j = 0; j < s.fields[i].length; j++) {
                     if (s.fields[i][j] > 0)
@@ -2717,7 +2713,6 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                 area += result[i].x * (result[i + 1].y - result[i - 1].y);
             area /= 2;
             main_17._.game.SetScore((Math.round(area)));
-            console.log('Area ', area);
         };
         Board.prototype.dist2 = function (p, a) {
             return (p.x - a.x) * (p.x - a.x) + (p.y - a.y) * (p.y - a.y);
@@ -2843,7 +2838,6 @@ define("Objects/Board", ["require", "exports", "Objects/O", "Objects/ToolBar", "
                         BestResX = defX;
                         BestResY = defY;
                     }
-                    console.log("true!!!!!");
                     return true;
                 }
                 if (depth + 1 > BestDepth)

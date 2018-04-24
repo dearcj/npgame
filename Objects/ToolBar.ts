@@ -330,7 +330,6 @@ export class ToolBar extends O {
         let board = _.sm.findByType(Board)[0];
 
         let btnSubmit = _.sm.findStringId("btnsubmit");
-        console.log("Zeroes ", allZeroes, " drag ", board.draggin);
         if (allZeroes && !board.draggin && _.game.score <= _.game.limit) {
             if (this.tweenComplete) {
                 this.tweenComplete = _.killTween(this.tweenComplete)

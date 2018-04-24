@@ -42,7 +42,6 @@ const GLOBAL_ASSETS = [
     'fonts/main-export.xml',
     'fonts/font2-export.xml',
 
-
     ///////////////////////////////////////////
     //  Shaders
     ///////////////////////////////////////////

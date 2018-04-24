@@ -127,7 +127,6 @@ export class Board extends O {
     }
 
     pullShape(s: ShapeOnBoard): boolean {
-        console.log("Pulling shape, ", s.StartX, '  ', s.StartY);
         s.InsideBoard = false;
         this.pullShapeFromField(s.StartX, s.StartY, s.Shape, s.Rotation);
         this.updateSquare();
@@ -143,7 +142,6 @@ export class Board extends O {
         let x = m.rv2(v, draggin.Gfx.rotation);
         let dragstartx = Math.round((loc.x - Math.abs(x[0])) / cx );
         let dragstarty = Math.round((loc.y - Math.abs(x[1])) / cx );
-        console.log(dragstartx, "    ", dragstarty);
         draggin.StartX = dragstartx;
         draggin.StartY = dragstarty;
         this.UpdateGFXPos(draggin.Gfx, dragstartx, dragstarty);
@@ -151,7 +149,6 @@ export class Board extends O {
 
     private putShapeInField(dragstartx: number, dragstarty: number, Shape: Shape, rot: number) {
         let s = this.getRotatedShape(Shape, rot);
-        console.log("Put shape, ", dragstartx, '  ', dragstarty);
         for (let i = 0; i < s.fields.length; i++) {
             for (let j = 0; j < s.fields[i].length; j++) {
                 if (s.fields[i][j] > 0)
@@ -247,7 +244,6 @@ export class Board extends O {
             area += result[i].x*(result[i+1].y-result[i - 1].y);
         area /= 2;
         _.game.SetScore((Math.round(area)));
-        console.log('Area ',area);
     }
 
     private dist2(p: Point, a: Point) {
@@ -388,7 +384,6 @@ export class Board extends O {
                     BestResX = defX;
                     BestResY = defY;
                 }
-                console.log("true!!!!!");
                 return true;
             }
 
